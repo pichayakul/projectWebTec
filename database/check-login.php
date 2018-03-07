@@ -1,12 +1,12 @@
 
 <?php
 // require_once("../database/epmtfafn_satta_db.php");
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 function hasUsername($loginusername) {
 	$servername = "localhost";
-	$username = "epmtfafn_satta";
-	$password = "satta123";
+	$username = "root";
+	$password = "";
 	$dbname = "epmtfafn_satta";
 
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -26,8 +26,8 @@ function hasUsername($loginusername) {
 
 function getPassword($loginusername) {
 	$servername = "localhost";
-	$username = "epmtfafn_satta";
-	$password = "satta123";
+	$username = "root";
+	$password = "";
 	$dbname = "epmtfafn_satta";
 
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

@@ -1,8 +1,8 @@
 <?php
 function getUsername($loginusername) {
 	$servername = "localhost";
-	$username = "epmtfafn_satta";
-	$password = "satta123";
+	$username = "root";
+	$password = "";
 	$dbname = "epmtfafn_satta";
 
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
