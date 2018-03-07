@@ -4,7 +4,7 @@
 	<title>View Profile</title>
 	<meta charset="utf-8">
 </head>
-<? require 'header.php'; ?>
+<?php require 'header.php'; ?>
 <body>
 	<div class="row content">
 		<div class="col-sm-1" style="background-color:lavender;"></div>
@@ -24,24 +24,24 @@
 						<h4>Information</h4><br>
 						<div class="form-group">
 							<label>First Name</label>
-							<input type="text" class="form-control" name="first_name" value="<? echo $_SESSION['first_name']; ?>" required>
+							<input type="text" class="form-control" name="first_name" value="<?php echo $_SESSION['first_name']; ?>" required>
 						</div>
 						<div class="form-group">
 							<label>Last Name</label>
-							<input type="text" class="form-control" name="last_name" value="<? echo $_SESSION['last_name']; ?>" required>
+							<input type="text" class="form-control" name="last_name" value="<?php echo $_SESSION['last_name']; ?>" required>
 						</div>
 						<div class="form-group">
 							<label>Nickname</label>
-							<input type="text" class="form-control" name="nickname" value="<? echo $_SESSION['nickname']; ?>" required>
+							<input type="text" class="form-control" name="nickname" value="<?php echo $_SESSION['nickname']; ?>" required>
 						</div>
-						<label>Gender <? switch ($_SESSION['gender']){case 'm':echo "Male";break; case 'w':echo "Female";break;} ?></label>
+						<label>Gender <?php switch ($_SESSION['gender']){case 'm':echo "Male";break; case 'w':echo "Female";break;} ?></label>
 						<br>
-						<label>Age <? echo $_SESSION['age']; ?></label>
+						<label>Age <?php echo $_SESSION['age']; ?></label>
 						<hr>
 						<h4>Contacts</h4><br>
 						<div class="form-group">
 							<label>Email</label>
-							<input type="text" class="form-control" name="email" value="<? echo $_SESSION['email']; ?>" required>
+							<input type="text" class="form-control" name="email" value="<?php echo $_SESSION['email']; ?>" required>
 						</div>
 						<br>
 						<hr>

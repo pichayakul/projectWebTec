@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Manage User</title>
+	<meta charset="utf-8">
+</head>
+<?php require 'header.php'; ?>
+<?php
+
+	$is_show_next = "";
+	$is_show_previous = "";
+	$next_page = 0;
+	$previous_page = 0;
+	$str_table = "";
+	function pageToString($number, $arr) {
+		$capacity = 5;
+		$begin = 1;
+		$max = ($number*$capacity); 
+		if ($number > 1) {
+			$begin = (($number-1)*$capacity)+1;
+		}
+
+		if ((count($arr) - $begin) < $capacity) {
+			$GLOBALS['is_show_next'] = "noshow";
+		} else {
+			$GLOBALS['next_page'] = $number+1;
+		}
+		if ($number == 1) {
+			$GLOBALS['is_show_previous'] = "noshow";
+		} else {
+			$GLOBALS['previous_page'] = $number-1;
+		}
+
+		$str = '<table class="table table-bordered table-striped"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
+		for ($i=$begin; $i <= $max && $i <= count($arr); $i++) {
+			$username = $arr[$i-1]['username'];
+			$str .= '<tr>';
+			$str .= '<td>'.$i.'</td>';
+			$str .= '<td>'.$username.'</td>';
+			$str .= '<td><form method="POST" action="./updateuser.php">';
+			$str .= '<input type="hidden" name="username" value"'.$username.'">';
+			$str .= '<input type="hidden" name="status" value"update">';
+			$str .= '<button type="submit" name="submit">Update</button>';
+			$str .= '</form></td>';
+			$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
+			$str .= '<input type="hidden" name="username" value"'.$username.'">';
+			$str .= '<input type="hidden" name="status" value"ban">';
+			$str .= '<button type="submit" name="submit">Ban</button>';
+			$str .= '</form></td>';
+			$str .= '</tr>';
+		}
+		$str .= "</tbody></table>";
+		return $str;
+	}
+
+	require './database/epmtfafn_satta_db.php';
+	$db = new Database();
+	$db->openDatabase();
+	$arr = $db->get_account_all();
+	$db->closeDatabase();
+	if (isset($_POST['next_page'])) {
+		$str_table = pageToString($_POST['next_page'], $arr);
+	} else {
+		$str_table = pageToString(1, $arr);
+	}
+
+	$str_search = "";
+	if (isset($_POST['search-username'])) {
+		for ($i=0; $i < count($arr); $i++) {
+			if (!strcmp($_POST['username'], $arr[$i]['username'])) {
+				$str = '<h5>Result</h5><table class="table table-bordered"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
+
+				$username = $arr[$i]['username'];
+				$question = 'Do you want ban '.$username.' from website?';
+				$str .= '<tr>';
+				$str .= '<td>'.($i+1).'</td>';
+				$str .= '<td>'.$username.'</td>';
+				$str .= '<td><form method="GET" action="">';
+				$str .= '<input type="hidden" name="username" value"'.$username.'">';
+				$str .= '<input type="hidden" name="status" value"update">';
+				$str .= '<button type="submit" name="submit">Update</button>';
+				$str .= '</form></td>';
+				$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
+				$str .= '<input type="hidden" name="username" value"'.$username.'">';
+				$str .= '<input type="hidden" name="status" value"ban">';
+				$str .= '<button type="submit" name="submit">Ban</button>';
+				$str .= '</form></td>';
+				$str .= '</tr>';
+				$str .= "</tbody></table>";
+				$str_search = $str;
+				break;
+			} else {
+				$str_search = "<label>Result: username not found, please try again.</label>";
+			}
+		}
+	}
+?>
+<body>
+	<div class="row content">
+		<div class="col-sm-1" style="background-color:lavender;"></div>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-sm-12 clearfix">
+					<br>
+					<a class="btn btn-primary btn-sm float-left" href="./management.php">< Back</a>
+					<br>
+					<hr>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 text-center">
+
+					<h2>Management Users</h2>
+					<br>
+					<hr>
+					<br>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6 text-center">
+					<form id="search-user-form" class="form-inline" method="POST" action="">
+				    <div class="form-group">
+				      <label for="username">Username: </label>
+				      <input type="text" class="form-control" placeholder="Enter Username" name="username" require>
+				      <input type="hidden" name="search-username" value="1">
+				      <input type="submit" name="submit" value="Search">
+				    </div>
+					</form>
+					<br><br>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<?php echo $str_search;?>
+					<br>
+					<hr>
+					<br>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<h5>All username (5 users per page)</h5>
+					<?php  echo $str_table;?>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 clearfix">
+					<br>
+					<form id="next-page-form" method="POST">
+						<input type="hidden" name="next_page" value="<?php echo $next_page;?>">
+						<a class="btn btn-primary btn-sm float-right <?php echo $is_show_next;?>" onclick="document.getElementById('next-page-form').submit();">Next</a>
+					</form>
+					<form id="previous-page-form" method="POST" >
+						<input type="hidden" name="next_page" value="<?php echo $previous_page;?>">
+						<a class="btn btn-primary btn-sm float-left <?php echo $is_show_previous;?>" onclick="document.getElementById('previous-page-form').submit();">Previous</a>
+					</form>
+					<br>
+					<hr>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-1" style="background-color:lavender;"></div>
+	</div>
+</body>
+</html>

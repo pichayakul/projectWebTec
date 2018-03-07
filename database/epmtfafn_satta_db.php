@@ -92,6 +92,19 @@ class Database
 	}
 
 
+	public function get_event_username($username) {
+		try {
+			$ret = array();
+			$statement = $this->conn->prepare('SELECT * FROM event WHERE username=:username' );
+			$statement->execute([':username' => $username]); //  set no event
+			$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all and get array
+			return $ret;
+		} catch (PDOException $e) {
+			echo "ERROR get_noevent($noevent)";
+		}
+	}
+
+
 	/**
 	*  Get all event
 	*  @return Array
@@ -121,6 +134,22 @@ class Database
 	public function get_event_all() {
 		$ret = array();
 		$statement = $this->conn->query('SELECT * FROM event WHERE type="event"');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;
+	}
+
+
+	public function get_event_sort_desc_alive() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event WHERE type="event" AND status=0 ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;
+	}
+
+
+	public function get_event_sort_desc_all() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event WHERE type="event" ORDER BY current DESC');
 		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
 		return $ret;
 	}
@@ -157,7 +186,23 @@ class Database
 		$statement = $this->conn->query('SELECT * FROM event WHERE type="seminar"');
 		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
 		return $ret;
-	}	
+	}
+
+
+	public function get_seminar_sort_desc_alive() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event WHERE type="seminar" AND status=0 ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;
+	}
+
+
+	public function get_seminar_sort_desc_all() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event WHERE type="seminar" ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;
+	}
 
 
 	/**
@@ -689,7 +734,7 @@ class Database
 
 	public function get_account_all() {
 		$ret = array();
-		$statement = $this->$conn->query('SELECT * FROM account');
+		$statement = $this->conn->query('SELECT * FROM account WHERE status_ban=0');
 		$ret = $statement->fetchAll(PDO::FETCH_ASSOC);
 		return $ret;
 	}
@@ -772,12 +817,15 @@ class Database
 			/* TEST */
 	/********************************************************************************/
 
-// $db = new Database();
-// $db->openDatabase();
-// echo "COnnect";
+$db = new Database();
+$db->openDatabase();
+echo "COnnect";
+echo "<pre>";
+print_r($db->get_event_sort_desc_all());
+echo "</pre>";
 // $db->delete_topiccomment_notopic(1);
 // echo "Opened Database.<br />";
-// // echo "<pre>";
+
 // $db->create_assessment(1, 4);
 // // print_r($db->gene_noquestion(1));
 // // $db->confirm_eventmember(1,"hello123");
@@ -785,10 +833,10 @@ class Database
 // // print_r($db->gene_notopic_noevent(1));
 // // $db->create_comment(1,2,"supanut","ความเห็นที่2",0);
 // // $db->create_topic(2,1,"supanut","ทดสอบการตั้งกระทู้","ทดสอบเฉยๆ",0);
-// // print_r($db->create_event(3,"supanut","ทดสอบ","event",1,5,"","","ทดสอบ",0,"ไม่มี","ไม่มี"));
-// echo "</pre>";
-// $db->closeDatabase();
-// echo "Closed";
+// $db->create_event("supanut","ทดสอบ","event",10,20,5000,"","","ทดสอบ",0,0,0,"ไม่มี","ไม่มี",0);
+
+$db->closeDatabase();
+echo "Closed";
 // echo "Closed Database.<br />";
 // // echo $db->encodePassword("hello123");
 // // $db->decodePassword("4QXX[");

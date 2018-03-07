@@ -9,14 +9,15 @@
 	$is_show_login = "";
 	$is_show_profile = "noshow";
 
-	session_save_path('./session');
+	session_save_path('./session/');
 	session_start();
 	// session_destroy();
 	if (isset($_POST['status'])) {
 		if ($_POST['status'] == "logout") {
 			session_destroy();
 		}
-	} else if (isset($_SESSION['username'])) {
+	} 
+	if (isset($_SESSION['username'])) {
 		$is_show_login = "noshow";
 		$is_show_profile = "";
 	} else if (isset($_POST['login-username'])) {
@@ -33,7 +34,7 @@
 				$db = new Database();
 				$db->openDatabase();
 				$image_path = $_SESSION['image'];
-				if ($_POST['image'] != "") {
+				if (isset($_POST['image']) && $_POST['image'] != "") {
 					$image_path = $_POST['image'];
 				}
 				$db->update_account($_SESSION['username'],$_SESSION['password'],$_POST['nickname'],$_SESSION['position'],
@@ -45,6 +46,9 @@
 	}
 
 	print_r($_SESSION);
+	echo "<br>";
+	print_r($is_show_login);
+	echo "<br>";
 
 	if (isset($_POST['submit-register'])) {
 		$is_show = "";
@@ -52,7 +56,9 @@
 ?>
 	<div class="row" style="background-color: yellow;">
 		<div class="col-sm-3">
-			<h3 id="name">The Garden</h3>
+			<form id="name-website-form" method="POST" action="./index.php">
+				<h3 id="name-website" onclick="document.getElementById('name-website-form').submit();">The Garden</h3>
+			</form>
 		</div>
 		<div class="col-sm-6"></div>
 		<div class="col-sm-3">
@@ -61,9 +67,9 @@
 			<div class="dropdown">
 				<button type="button" id="btn-profile" class="btn btn-primary dropdown-toggle login <?php echo $is_show_profile;?>" data-toggle="dropdown"><?php echo $_SESSION['first_name']." ".$_SESSION['last_name']; ?><span class="caret"></span></button>
 			  <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/viewprofile.php">View profile</a>
-			    <a class="dropdown-item" href="/viewevent.php">View event</a>
-			    <a class="dropdown-item <?php if($_SESSION['position']!="admin"){ echo "noshow";} ?>" href="/management.php" >Management</a>
+			    <a class="dropdown-item" href="./viewprofile.php">View profile</a>
+			    <a class="dropdown-item" href="./viewevent.php">View event</a>
+			    <a class="dropdown-item <?php if($_SESSION['position']!="admin"){ echo "noshow";} ?>" href="./management.php" >Management</a>
 			    <div class="dropdown-divider"></div>
 			    <form id="logout-form" method="POST" action="index.php">
 			    	<input type="hidden" name="status" value="logout">
