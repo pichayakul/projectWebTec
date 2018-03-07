@@ -817,12 +817,12 @@ class Database
 			/* TEST */
 	/********************************************************************************/
 
-$db = new Database();
-$db->openDatabase();
-echo "COnnect";
-echo "<pre>";
-print_r($db->get_event_sort_desc_all());
-echo "</pre>";
+// $db = new Database();
+// $db->openDatabase();
+// echo "COnnect";
+// echo "<pre>";
+// print_r($db->get_event_sort_desc_all());
+// echo "</pre>";
 // $db->delete_topiccomment_notopic(1);
 // echo "Opened Database.<br />";
 
@@ -835,8 +835,8 @@ echo "</pre>";
 // // $db->create_topic(2,1,"supanut","ทดสอบการตั้งกระทู้","ทดสอบเฉยๆ",0);
 // $db->create_event("supanut","ทดสอบ","event",10,20,5000,"","","ทดสอบ",0,0,0,"ไม่มี","ไม่มี",0);
 
-$db->closeDatabase();
-echo "Closed";
+// $db->closeDatabase();
+// echo "Closed";
 // echo "Closed Database.<br />";
 // // echo $db->encodePassword("hello123");
 // // $db->decodePassword("4QXX[");
