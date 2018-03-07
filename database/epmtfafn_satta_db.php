@@ -15,8 +15,10 @@ class Database
 
 	//  SET PROPERTY
 	private $servername = "localhost";
-	private $username = "epmtfafn_satta";
-	private $password = "satta123";
+	// private $username = "epmtfafn_satta";
+	// private $password = "satta123";
+	private $username = "root";
+	private $password = "";
 	private $dbname = "epmtfafn_satta";
 	private $conn = null; //  connect database
 
@@ -374,7 +376,7 @@ class Database
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
 															$image_path,$vdo_path,$description,$create_date_time,
 															$start_date_time,$end_date_time,$location,$condition) {
-		$statement = $this->$conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,condition=:condition WHERE noevent=:noevent' );
+		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,condition=:condition WHERE noevent=:noevent' );
 		$statement->execute([':noevent' => $noevent,
 												':username' => $username,
 												':name' => $name,
@@ -394,13 +396,13 @@ class Database
 
 
 	public function update_event_finish($noevent) {
-		$statement = $this->$conn->prepare('UPDATE event SET status=1 WHERE noevent=:noevent');
+		$statement = $this->conn->prepare('UPDATE event SET status=1 WHERE noevent=:noevent');
 		$statement->execute([':noevent' => $noevent]);
 	}
 
 
 	public function delete_event($noevent) {
-		$statement = $this->$conn->prepare('DELETE event WHERE noevent=:noevent');
+		$statement = $this->conn->prepare('DELETE FROM event WHERE noevent=:noevent');
 		$statement->execute([':noevent' => $noevent]);		
 	}
 
@@ -581,14 +583,13 @@ class Database
 
 
 	public function delete_topiccomment_notopic($notopic) {
-		$statement = $this->$conn->prepare('DELETE topic WHERE notopic=:notopic');
+		$statement = $this->conn->prepare('DELETE FROM topic WHERE notopic=:notopic');
 		$statement->execute([':notopic' => $notopic]);
-		delete_comment_notopic($notopic);
 	}
 
 
 	public function delete_comment_notopic($notopic) {
-		$statement = $this->$conn->prepare('DELETE comment WHERE notopic=:notopic');
+		$statement = $this->conn->prepare('DELETE FROM comment WHERE notopic=:notopic');
 		$statement->execute([':notopic' => $notopic]);		
 	}
 
@@ -681,7 +682,7 @@ class Database
 
 
 	public function ban_account($username) {
-		$statement = $this->$conn->prepare('UPDATE account SET status_ban=1 WHERE username=:username');
+		$statement = $this->conn->prepare('UPDATE account SET status_ban=1 WHERE username=:username');
 		$statement->execute([':username' => $username]);
 	}
 
@@ -773,6 +774,8 @@ class Database
 
 // $db = new Database();
 // $db->openDatabase();
+// echo "COnnect";
+// $db->delete_topiccomment_notopic(1);
 // echo "Opened Database.<br />";
 // // echo "<pre>";
 // $db->create_assessment(1, 4);
@@ -785,6 +788,7 @@ class Database
 // // print_r($db->create_event(3,"supanut","ทดสอบ","event",1,5,"","","ทดสอบ",0,"ไม่มี","ไม่มี"));
 // echo "</pre>";
 // $db->closeDatabase();
+// echo "Closed";
 // echo "Closed Database.<br />";
 // // echo $db->encodePassword("hello123");
 // // $db->decodePassword("4QXX[");
