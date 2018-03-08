@@ -732,6 +732,13 @@ class Database
 	}
 
 
+	public function infoUsername($username) {
+	  $statement = $this->conn->prepare('SELECT * FROM account WHERE username=:username' );
+	  $statement->execute([':username' => $username]); //  set username
+	  $result = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+	  return $result;
+	 }
+
 	public function get_account_all() {
 		$ret = array();
 		$statement = $this->conn->query('SELECT * FROM account WHERE status_ban=0');
