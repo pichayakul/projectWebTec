@@ -22,7 +22,6 @@
 		require './database/add_info_to_session.php';
 		$is_show_login = "noshow";
 		$is_show_profile = "";
-		echo "into login-username";
 	}
 
 	if (isset($_POST['status'])) {
@@ -44,7 +43,7 @@
 					$image_path = $_POST['image'];
 				}
 				$db->update_account($_SESSION['username'],$_SESSION['password'],$_POST['nickname'],$_SESSION['position'],
-						$_POST['first_name'],$_POST['last_name'],$_POST['email'],$image_path,$_SESSION['qrcode']);
+						$_POST['first_name'],$_POST['last_name'],$_POST['email'],$image_path);
 				$db->closeDatabase();
 				require './database/add_info_to_session.php';
 			}
@@ -52,8 +51,6 @@
 	}
 
 	print_r($_SESSION);
-	echo "<br>";
-	print_r($is_show_login);
 	echo "<br>";
 ?>
 	<div class="row" style="background-color: yellow;">
@@ -409,7 +406,7 @@
 				console.log("through condition.");
 				document.getElementById('register-form').submit();
 			});
-			
+
 			$('#register-username').keyup(function() {
 				username = $('#register-username').val();
         $.ajax({

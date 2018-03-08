@@ -335,7 +335,6 @@ class Database
 								[join_date_time] =>
 								[payment_path] =>
 								[pre_path] =>
-								[qrcode] =>
 							)
 							...
 						)
@@ -728,8 +727,8 @@ class Database
 
 
 	public function update_account($username,$password,$nickname,$position,$first_name,$last_name,
-												$email,$image,$qrcode) {
-		$statement = $this->conn->prepare('UPDATE account SET password=:password,nickname=:nickname,position=:position,first_name=:first_name,last_name=:last_name,email=:email,image=:image,qrcode=:qrcode WHERE username=:username' );
+												$email,$image) {
+		$statement = $this->conn->prepare('UPDATE account SET password=:password,nickname=:nickname,position=:position,first_name=:first_name,last_name=:last_name,email=:email,image=:image WHERE username=:username' );
 		$statement->execute([':username' => $username,
 												':password' => $password,
 												':nickname' => $nickname,
@@ -737,8 +736,7 @@ class Database
 												':first_name' => $first_name,
 												':last_name' => $last_name,
 												':email' => $email,
-												':image' => $image,
-												':qrcode' => $qrcode]); //  set username
+												':image' => $image]); //  set username
 	}
 
 
