@@ -82,9 +82,9 @@
 						</div>
 						<div class="form-group">
 							<label class="mr-5">Gender</label>
-							<input type="radio" name="gender" <?php echo $male_checked; ?> required>
+							<input type="radio" name="gender" <?php echo $male_checked; ?> value="m" required>
 							<label class="mr-3">Male</label>
-							<input type="radio" name="gender" <?php echo $female_checked; ?> required>
+							<input type="radio" name="gender" <?php echo $female_checked; ?> value="w" required>
 							<label>Female</label>
 						</div>
 						<br>
@@ -104,16 +104,17 @@
 						<div class="form-group">
 							<label class="">Position</label>
 							<br>	
-							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $admin_checked; ?> required>
+							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $admin_checked; ?> value="admin" required>
 							<label>Adminitrator</label><br>
-							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $orga_checked; ?> required>
+							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $orga_checked; ?> value="organizer" required>
 							<label>Organizer</label><br>
-							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $atten_checked; ?> required>
+							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $atten_checked; ?> value="attendant" required>
 							<label>Attendant</label>
 						</div>
 						<br><br>
 						<hr>
 						<div class="text-center">
+							<input type="hidden" name="username" value="<?php echo $username; ?>">
 							<input type="hidden" name="status" value="update">
 							<button type="submit" class="btn btn-danger" name="submit">Change</button>
 							<label>or</label>
