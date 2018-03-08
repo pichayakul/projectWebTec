@@ -735,7 +735,7 @@ class Database
 	public function infoUsername($username) {
 	  $statement = $this->conn->prepare('SELECT * FROM account WHERE username=:username' );
 	  $statement->execute([':username' => $username]); //  set username
-	  $result = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+	  $result = $statement->fetchAll(PDO::FETCH_ASSOC)[0]; //  fetch all to Array in Array
 	  return $result;
 	 }
 
