@@ -59,6 +59,25 @@
 	if (isset($_POST['status'])) {
 		if (!strcmp($_POST['status'], "ban")) {
 			$db->ban_account($_POST['username']);
+		} else if (!strcmp($_POST['status'], "update")) {
+			print_r($_POST);
+			$first_name = $_POST['first_name'];
+			$last_name = $_POST['last_name'];
+			$nickname = $_POST['nickname'];
+			$age = $_POST['age'];
+			$gender = $_POST['gender'];
+			$position = $_POST['position'];
+			$email = $_POST['email'];
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$db->update_account_keyword($username, "first_name", $first_name);
+			$db->update_account_keyword($username, "last_name", $last_name);
+			$db->update_account_keyword($username, "nickname", $nickname);
+			$db->update_account_keyword($username, "age", $age);
+			$db->update_account_keyword($username, "gender", $gender);
+			$db->update_account_keyword($username, "position", $position);
+			$db->update_account_keyword($username, "email", $email);
+			$db->update_account_keyword($username, "password", $password);
 		}
 	}
 	if (isset($_POST['next_page'])) {
