@@ -93,24 +93,32 @@
 	        
 	        <!-- <h4 class="modal-title">Modal Header</h4> -->
 	      </div>
-	      <div class="modal-body text-center" id="login-content">
+	      <div class="modal-body text-center clearfix ml-4 mr-4" id="login-content">
 	      	<br>
 	      	<form id="login-form" method="post" action="">
-	      		<input type="text" id="login-username" name="login-username" placeholder="Username">
-	      		<input type="password" id="login-password" name="login-password" placeholder="Password">
+	      		<div class="form-group">
+	      			<label class="float-left">Username</label>
+	      			<input type="text" id="login-username" class="form-control" name="login-username" placeholder="Username">
+	      		</div>
+	      		<div class="form-group">
+	      			<label class="float-left">Password</label>
+	      			<input type="password" id="login-password" class="form-control" name="login-password" placeholder="Password">
+	      		</div>
 	      		<input type="hidden" id="login-status" name="login-status" value="0">
-	      		<br>
 	      		<label id="alert-login" class="noshow">username or password are wrong.</label>
 	      		<br>
-	      		<button type="button" name="submit-login" id="login-form-submit" value="Log in">Log in</button>
+	      		<a class="btn btn-success" name="submit-login" id="login-form-submit" value="Log in">Log in</a>
+	      		<label>or</label>
+	      		<a class="btn btn-success" onclick="location.reload();">Cancel</a>
 	      	</form>
+	      	<br>
 	      	<a href="#">Forget Password</a>
 	      	<hr>
 	      	<p class="text-center">
 	      		<a href="#" id="btn-register">Sign up</a>
 	      	</p>
 	      </div>
-	      <div class="modal-body" id="register-content" style="display: none;">
+	      <div class="modal-body ml-3 mr-3" id="register-content" style="display: none;">
 	      	<form id="register-form" method="POST" action="./verify.php" enctype="multipart/form-data">
 	      		<div class="form-group">
 		      		<label id="text-username">Username</label>
@@ -165,7 +173,7 @@
 	      		<br><br>
 	      		<a class="btn btn-primary" id="register-form-submit" name="register-form-submit">Register</a>
 	      		<label>or</label>
-	      		<a class="btn btn-secondary" id="register-form-cancel" name="register-form-cancel">Cancel</a>
+	      		<a class="btn btn-secondary" onclick="location.reload();">Cancel</a>
 	      	</form>
 	      </div>
 	    </div>
@@ -401,6 +409,7 @@
 				console.log("through condition.");
 				document.getElementById('register-form').submit();
 			});
+			
 			$('#register-username').keyup(function() {
 				username = $('#register-username').val();
         $.ajax({
