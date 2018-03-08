@@ -238,6 +238,21 @@ class Database
 		return $ret;
 	}
 
+	public function get_event_and_seminar_sort_desc_alive() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event WHERE status=0 ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;		
+	}
+
+
+	public function get_event_and_seminar_sort_desc_all() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;
+	}
+
 
 	/**
 	*  Get all event
