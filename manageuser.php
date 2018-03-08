@@ -60,7 +60,6 @@
 		if (!strcmp($_POST['status'], "ban")) {
 			$db->ban_account($_POST['username']);
 		} else if (!strcmp($_POST['status'], "update")) {
-			print_r($_POST);
 			$first_name = $_POST['first_name'];
 			$last_name = $_POST['last_name'];
 			$nickname = $_POST['nickname'];
