@@ -6,7 +6,6 @@
 </head>
 <?php require 'header.php'; ?>
 <?php
-
 	$is_show_next = "";
 	$is_show_previous = "";
 	$next_page = 0;
@@ -31,20 +30,20 @@
 			$GLOBALS['previous_page'] = $number-1;
 		}
 
-		$str = '<table class="table table-bordered table-striped"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
+		$str = '<table class="table table-bordered table-striped table-sm"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
 		for ($i=$begin; $i <= $max && $i <= count($arr); $i++) {
 			$username = $arr[$i-1]['username'];
 			$str .= '<tr>';
 			$str .= '<td>'.$i.'</td>';
 			$str .= '<td>'.$username.'</td>';
 			$str .= '<td><form method="POST" action="./updateuser.php">';
-			$str .= '<input type="hidden" name="username" value"'.$username.'">';
-			$str .= '<input type="hidden" name="status" value"update">';
+			$str .= '<input type="hidden" name="username" value="'.$username.'">';
+			$str .= '<input type="hidden" name="status" value="update">';
 			$str .= '<button type="submit" name="submit">Update</button>';
 			$str .= '</form></td>';
 			$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
-			$str .= '<input type="hidden" name="username" value"'.$username.'">';
-			$str .= '<input type="hidden" name="status" value"ban">';
+			$str .= '<input type="hidden" name="username" value="'.$username.'">';
+			$str .= '<input type="hidden" name="status" value="ban">';
 			$str .= '<button type="submit" name="submit">Ban</button>';
 			$str .= '</form></td>';
 			$str .= '</tr>';
@@ -57,18 +56,22 @@
 	$db = new Database();
 	$db->openDatabase();
 	$arr = $db->get_account_all();
-	$db->closeDatabase();
+	if (isset($_POST['status'])) {
+		if (!strcmp($_POST['status'], "ban")) {
+			$db->ban_account($_POST['username']);
+		}
+	}
 	if (isset($_POST['next_page'])) {
 		$str_table = pageToString($_POST['next_page'], $arr);
 	} else {
 		$str_table = pageToString(1, $arr);
 	}
-
+	$db->closeDatabase();
 	$str_search = "";
 	if (isset($_POST['search-username'])) {
 		for ($i=0; $i < count($arr); $i++) {
 			if (!strcmp($_POST['username'], $arr[$i]['username'])) {
-				$str = '<h5>Result</h5><table class="table table-bordered"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
+				$str = '<h5>Result</h5><table class="table table-bordered table-sm"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
 
 				$username = $arr[$i]['username'];
 				$question = 'Do you want ban '.$username.' from website?';
@@ -76,13 +79,13 @@
 				$str .= '<td>'.($i+1).'</td>';
 				$str .= '<td>'.$username.'</td>';
 				$str .= '<td><form method="GET" action="">';
-				$str .= '<input type="hidden" name="username" value"'.$username.'">';
-				$str .= '<input type="hidden" name="status" value"update">';
+				$str .= '<input type="hidden" name="username" value="'.$username.'">';
+				$str .= '<input type="hidden" name="status" value="update">';
 				$str .= '<button type="submit" name="submit">Update</button>';
 				$str .= '</form></td>';
 				$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
-				$str .= '<input type="hidden" name="username" value"'.$username.'">';
-				$str .= '<input type="hidden" name="status" value"ban">';
+				$str .= '<input type="hidden" name="username" value="'.$username.'">';
+				$str .= '<input type="hidden" name="status" value="ban">';
 				$str .= '<button type="submit" name="submit">Ban</button>';
 				$str .= '</form></td>';
 				$str .= '</tr>';
@@ -142,24 +145,26 @@
 				<div class="col-sm-2"></div>
 			</div>
 			<div class="row">
-				<div class="col-sm-2"></div>
+				<div class="col-sm-2 h-25 mt-auto mb-auto">
+					<form id="previous-page-form" method="POST" >
+						<input type="hidden" name="next_page" value="<?php echo $previous_page;?>">
+						<a class="btn btn-primary btn-sm float-right <?php echo $is_show_previous;?>" onclick="document.getElementById('previous-page-form').submit();">Previous</a>
+					</form>
+				</div>
 				<div class="col-sm-8">
 					<h5>All username (5 users per page)</h5>
 					<?php  echo $str_table;?>
 				</div>
-				<div class="col-sm-2"></div>
+				<div class="col-sm-2 h-25 mt-auto mb-auto">
+					<form id="next-page-form" method="POST">
+						<input type="hidden" name="next_page" value="<?php echo $next_page;?>">
+						<a class="btn btn-primary btn-sm <?php echo $is_show_next;?>" onclick="document.getElementById('next-page-form').submit();">Next</a>
+					</form>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 clearfix">
 					<br>
-					<form id="next-page-form" method="POST">
-						<input type="hidden" name="next_page" value="<?php echo $next_page;?>">
-						<a class="btn btn-primary btn-sm float-right <?php echo $is_show_next;?>" onclick="document.getElementById('next-page-form').submit();">Next</a>
-					</form>
-					<form id="previous-page-form" method="POST" >
-						<input type="hidden" name="next_page" value="<?php echo $previous_page;?>">
-						<a class="btn btn-primary btn-sm float-left <?php echo $is_show_previous;?>" onclick="document.getElementById('previous-page-form').submit();">Previous</a>
-					</form>
 					<br>
 					<hr>
 				</div>

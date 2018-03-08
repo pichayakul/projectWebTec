@@ -12,20 +12,26 @@
 	session_save_path('./session/');
 	session_start();
 	// session_destroy();
-	if (isset($_POST['status'])) {
-		if ($_POST['status'] == "logout") {
-			session_destroy();
-		}
-	} 
+
 	if (isset($_SESSION['username'])) {
 		$is_show_login = "noshow";
 		$is_show_profile = "";
-	} else if (isset($_POST['login-username'])) {
+	}
+	if (isset($_POST['login-username'])) {
 		$_SESSION['username'] = $_POST['login-username'];
 		require './database/add_info_to_session.php';
 		$is_show_login = "noshow";
 		$is_show_profile = "";
+		echo "into login-username";
 	}
+
+	if (isset($_POST['status'])) {
+		if ($_POST['status'] == "logout") {
+			session_destroy();
+			$is_show_login = "";
+			$is_show_profile = "noshow";
+		}
+	} 
 
 	if (isset($_POST['status'])) {
 		if ($_POST['status'] == "viewprofile") {
@@ -71,10 +77,10 @@
 			    <a class="dropdown-item" href="./viewevent.php">View event</a>
 			    <a class="dropdown-item <?php if($_SESSION['position']!="admin"){ echo "noshow";} ?>" href="./management.php" >Management</a>
 			    <div class="dropdown-divider"></div>
-			    <form id="logout-form" method="POST" action="index.php">
-			    	<input type="hidden" name="status" value="logout">
-			    	<a class="dropdown-item" onclick="document.getElementById('logout-form').submit();">Log out</a>
-			    </form>
+			    <!-- <form id="logout-form" method="POST" action="index.php"> -->
+			    	<!-- <input type="hidden" name="status" value="logout"> -->
+			    <a class="dropdown-item" id="btn-logout">Log out</a>
+			    <!-- </form> -->
 			  </div>			
 			</div>
 		</div>
@@ -111,14 +117,14 @@
 	      </div>
 	      <div class="modal-body text-center" id="login-content">
 	      	<br>
-	      	<form id="login-form" method="post" action="index.php">
+	      	<form id="login-form" method="post" action="">
 	      		<input type="text" id="login-username" name="login-username" placeholder="Username">
 	      		<input type="password" id="login-password" name="login-password" placeholder="Password">
 	      		<input type="hidden" id="login-status" name="login-status" value="0">
 	      		<br>
 	      		<label id="alert-login" class="noshow">username or password are wrong.</label>
 	      		<br>
-	      		<input type="submit" name="submit-login" value="Log in">
+	      		<button type="button" name="submit-login" id="login-form-submit" value="Log in">Log in</button>
 	      	</form>
 	      	<a href="#">Forget Password</a>
 	      	<hr>
@@ -194,10 +200,10 @@
 
 	  </div>
 	</div>
-	<!-- <script src="./js/jquery-3.3.1.min.js"></script> -->
+	<script src="./js/jquery-3.3.1.min.js"></script>
 	<!-- <script src="./js/popper.min.js"></script> -->
 	<!-- <script src="./js/bootstrap.min.js"></script> -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
@@ -234,29 +240,42 @@
 				$('#register-content').css('display', 'block');
 				$('#login-header').text('Sign up');
 			});
-			$('#login-form').submit(function(e) {
+			$('#login-form-submit').click(function(e) {
 				var username = $('#login-username').val();
 				var password = $('#login-password').val();
-				
+				console.log('submit login form');
         $.ajax({
 	        url: "./database/check-login.php", //the page containing php script
 	        dataType: "json",
 	        method: "POST",
 	       	data: {username: username, password: password},
 	        success: function(response) {
-	        	output = response['output'];console.log(response);
+	        	output = response['output'];
 	        	if (output == 0) {
 	        		$('#alert-login').css('display', 'block');
-	        	}
-	        	else if (output == 1){
-	        		$('#login-status').val("1");
+	        	} else {
+	        		$('#myModal').hide();
+	        		$('#login-form').submit();
 	        	}
 		      }
 	     	});
-				if ($('#login-status').val() == 0) {
-					e.preventDefault();
-				}
-			});
+			});	     	
+			$('#btn-logout').click(function(e) {
+        $.ajax({
+	        url: "./database/check-logout.php", //the page containing php script
+	        dataType: "json",
+	        method: "POST",
+	       	data: {status: "delete"},
+	        success: function(response) {
+	        	output = response['status'];
+	        	if (output == "Deleted") {
+	        		$('#btn-login').css('display', 'block');
+	        		$('#btn-profile').css('display', 'none');
+	        		location.href="./index.php";
+	        	}
+		      }
+	     	});
+			});	 
 		}
 	</script>
 </body>
