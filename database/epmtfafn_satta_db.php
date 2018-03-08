@@ -15,10 +15,10 @@ class Database
 
 	//  SET PROPERTY
 	private $servername = "localhost";
-	// private $username = "epmtfafn_satta";
-	// private $password = "satta123";
-	private $username = "root";
-	private $password = "";
+	private $username = "epmtfafn_satta";
+	private $password = "satta123";
+	// private $username = "root";
+	// private $password = "";
 	private $dbname = "epmtfafn_satta";
 	private $conn = null; //  connect database
 
@@ -90,6 +90,29 @@ class Database
 			echo "ERROR get_noevent($noevent)";
 		}
 	}
+	public function add_eventmember($noevent,$username,$request_date_time,$payment_path,$pre_path,$ticket) {
+		$statement = $this->conn->prepare('INSERT INTO eventmember VALUES (:noevent,:username,status="request",:request_date_time,join_date_time="0000-00-00 00:00:00",:payment_path,:pre_path,qrcode=0,:tickets)');
+		$statement->execute([':noevent' => $noevent,
+												':username' => $username,
+												':request_date_time' => $request_date_time,
+												':payment_path' => $payment_path,
+												':pre_path' => $pre_path,
+												':tickets' => $ticket]); //  set no event
+		
+		
+	}
+	public function update_eventmember($noevent,$username,$request_date_time,$payment_path,$pre_path,$ticket) {
+		$statement = $this->conn->prepare('UPDATE eventmember SET request_date_time=:request_date_time,payment_path=:payment_path,pre_path=:pre_path,tickets=:tickets where username=:username and noevent=:noevent');
+		$statement->execute([':noevent' => $noevent,
+												':username' => $username,
+												':request_date_time' => $request_date_time,
+												':payment_path' => $payment_path,
+												':pre_path' => $pre_path,
+												':tickets' => $ticket]); //  set no event
+		
+		
+	}
+
 
 
 	public function get_event_username($username) {
@@ -366,7 +389,7 @@ class Database
 															$start_date_time,$end_date_time,$location,$condition) {
 		$noevent = 0;
 		$statement = $this->conn->prepare('INSERT INTO event VALUES (:noevent,:username,:name,:type,:current,:capacity,:price,:image_path,
-			:vdo_path,:description,:create_date_time,:start_date_time,:end_date_time,:location,:condition,status=0)' );
+			:vdo_path,:description,:create_date_time,:start_date_time,:end_date_time,:location,:pre_condition,status=0)' );
 		$statement->execute([':noevent' => $noevent,
 												':username' => $username,
 												':name' => $name,
@@ -381,7 +404,7 @@ class Database
 												':start_date_time' => $start_date_time,
 												':end_date_time' => $end_date_time,
 												':location' => $location,
-												':condition' => $condition]); //  set no event
+												':pre_condition' => $condition]); //  set no event
 		// $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
 	}
 
@@ -417,11 +440,10 @@ class Database
 		$statement->execute([':noevent'=>$noevent,':noassessment'=>$noassessment,':answer'=>$answer]);
 	}
 
-
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
 															$image_path,$vdo_path,$description,$create_date_time,
-															$start_date_time,$end_date_time,$location,$condition) {
-		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,condition=:condition WHERE noevent=:noevent' );
+															$start_date_time,$end_date_time,$location,$pre_condition) {
+		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:pre_condition WHERE noevent=:noevent' );
 		$statement->execute([':noevent' => $noevent,
 												':username' => $username,
 												':name' => $name,
@@ -436,7 +458,7 @@ class Database
 												':start_date_time' => $start_date_time,
 												':end_date_time' => $end_date_time,
 												':location' => $location,
-												':condition' => $condition]); //  set no event
+												':pre_condition' => $pre_condition]); //  set no event
 	}
 
 
