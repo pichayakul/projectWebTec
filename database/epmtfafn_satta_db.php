@@ -436,7 +436,7 @@ class Database
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
 															$image_path,$vdo_path,$description,$create_date_time,
 															$start_date_time,$end_date_time,$location,$condition) {
-		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,condition=:condition WHERE noevent=:noevent' );
+		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:condition WHERE noevent=:noevent' );
 		$statement->execute([':noevent' => $noevent,
 												':username' => $username,
 												':name' => $name,
@@ -697,6 +697,12 @@ class Database
 		$statement = $this->conn->query('SELECT * FROM user_log');
 		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
 		return $ret;
+	}
+
+
+	public function create_log($username, $date_time, $action) {
+		$statement = $this->conn->prepare('INSERT INTO user_log VALUES (0,:username,:date_time,:action)' );
+		$statement->execute([':username' => $username,':date_time' => $date_time, ':action' => $action]); //  set no event
 	}
 
 
