@@ -59,28 +59,28 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
   $msg = wordwrap($msg,70);
   $strHeader = "From: suphawichtsd@gmail.com";
   
-  // require_once('./PHPMailer_v5.0.2/class.phpmailer.php');
-  // $mail = new PHPMailer();
-  // $mail->IsHTML(true);
-  // $mail->IsSMTP();
-  // $mail->SMTPAuth = true; // enable SMTP authentication
-  // $mail->SMTPSecure = "ssl"; // sets the prefix to the servier
-  // $mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
-  // $mail->Port = 465; // set the SMTP port for the GMAIL server
-  // $mail->Username = "suphawichtsd@gmail.com"; // GMAIL username
-  // $mail->Password = "angelbeats10"; // GMAIL password
-  // $mail->From = "admin@sattagarden.com"; // "name@yourdomain.com";
-  // //$mail->AddReplyTo = "support@thaicreate.com"; // Reply
-  // $mail->FromName = "Mr. Suphawich Sungkhavorn";  // set from Name
-  // $mail->Subject = "Satta Garden - Verify you account";
-  // $mail->Body = $msg;
-  // $mail->AddAddress($email, $firstname." ".$lastname); // to Address
-  // // $mail->AddAttachment("thaicreate/myfile.zip");
-  // // $mail->AddAttachment("thaicreate/myfile2.zip");
-  // //$mail->AddCC("member@thaicreate.com", "Mr.Member ShotDev"); //CC
-  // //$mail->AddBCC("member@thaicreate.com", "Mr.Member ShotDev"); //CC
-  // $mail->set('X-Priority', '1'); //Priority 1 = High, 3 = Normal, 5 = low
-  // $mail->Send();
+  require_once('./PHPMailer_v5.0.2/class.phpmailer.php');
+  $mail = new PHPMailer();
+  $mail->IsHTML(true);
+  $mail->IsSMTP();
+  $mail->SMTPAuth = true; // enable SMTP authentication
+  $mail->SMTPSecure = "ssl"; // sets the prefix to the servier
+  $mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
+  $mail->Port = 465; // set the SMTP port for the GMAIL server
+  $mail->Username = "suphawichtsd@gmail.com"; // GMAIL username
+  $mail->Password = "angelbeats10"; // GMAIL password
+  $mail->From = "admin@sattagarden.com"; // "name@yourdomain.com";
+  //$mail->AddReplyTo = "support@thaicreate.com"; // Reply
+  $mail->FromName = "Mr. Suphawich Sungkhavorn";  // set from Name
+  $mail->Subject = "Satta Garden - Verify you account";
+  $mail->Body = $msg;
+  $mail->AddAddress($email, $firstname." ".$lastname); // to Address
+  // $mail->AddAttachment("thaicreate/myfile.zip");
+  // $mail->AddAttachment("thaicreate/myfile2.zip");
+  //$mail->AddCC("member@thaicreate.com", "Mr.Member ShotDev"); //CC
+  //$mail->AddBCC("member@thaicreate.com", "Mr.Member ShotDev"); //CC
+  $mail->set('X-Priority', '1'); //Priority 1 = High, 3 = Normal, 5 = low
+  $mail->Send();
 }
 
 
