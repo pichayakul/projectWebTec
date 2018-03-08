@@ -78,7 +78,7 @@
 				$str .= '<tr>';
 				$str .= '<td>'.($i+1).'</td>';
 				$str .= '<td>'.$username.'</td>';
-				$str .= '<td><form method="GET" action="">';
+				$str .= '<td><form method="POST" action="./updateuser.php">';
 				$str .= '<input type="hidden" name="username" value="'.$username.'">';
 				$str .= '<input type="hidden" name="status" value="update">';
 				$str .= '<button type="submit" name="submit">Update</button>';
