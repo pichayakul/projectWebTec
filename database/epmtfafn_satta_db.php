@@ -726,6 +726,29 @@ class Database
 	}
 
 
+	public function update_account_keyword($username, $key, $value) {
+		$statement = $this->conn->prepare('UPDATE account SET username=:username WHERE username=:username');
+		if ($key == 'first_name') {
+			$statement = $this->conn->prepare('UPDATE account SET first_name=:value WHERE username=:username');
+		} else if ($key == 'last_name') {
+			$statement = $this->conn->prepare('UPDATE account SET last_name=:value WHERE username=:username');
+		} else if ($key == 'nickname') {
+			$statement = $this->conn->prepare('UPDATE account SET nickname=:value WHERE username=:username');
+		} else if ($key == 'gender') {
+			$statement = $this->conn->prepare('UPDATE account SET gender=:value WHERE username=:username');
+		} else if ($key == 'age') {
+			$statement = $this->conn->prepare('UPDATE account SET age=:value WHERE username=:username');
+		} else if ($key == 'email') {
+			$statement = $this->conn->prepare('UPDATE account SET email=:value WHERE username=:username');
+		} else if ($key == 'password') {
+			$statement = $this->conn->prepare('UPDATE account SET password=:value WHERE username=:username');
+		} else if ($key == 'position') {
+			$statement = $this->conn->prepare('UPDATE account SET position=:value WHERE username=:username');
+		}
+		$statement->execute([':username' => $username,':value' => $value]);		
+	}
+
+
 	public function ban_account($username) {
 		$statement = $this->conn->prepare('UPDATE account SET status_ban=1 WHERE username=:username');
 		$statement->execute([':username' => $username]);
