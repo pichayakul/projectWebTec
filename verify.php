@@ -4,7 +4,7 @@
 	<title>Verify</title>
 	<meta charset="utf-8">
 </head>
-<?php require 'header.php';?>
+<?php require './header.php';?>
 <?php
 date_default_timezone_set('Asia/Bangkok');
 $username = $_POST['username'];
@@ -55,10 +55,13 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
 {
   // rename("./images/avatar/".$_FILES["file"]["name"], "./images/avatar/".$image);
   create_account($username,$password,$nickname,$position,$firstname,$lastname,$gender,$age,$email,$image_path,$start_date_time);
-  $msg = "Please, click link below for verify your account. After verified account, you can sign in and enjoy it.";
+  $msg = "Please, click link below for verify your account.<br>After verified account, you can sign in and enjoy it.<br><br>";
   $msg = wordwrap($msg,70);
+  $msg .= '<a href="http://localhost/projectWebTec/active-account.php?username='.$username.'&">Click Verify Here.</a><br><br>';
+  $msg .= 'Thank you for join to us.<br>We hope you enjoy the activities and seminars.<br><br>';
+  $msg .= 'Admin M.Suphawich';
   $strHeader = "From: suphawichtsd@gmail.com";
-  
+
   require_once('./PHPMailer_v5.0.2/class.phpmailer.php');
   $mail = new PHPMailer();
   $mail->IsHTML(true);
@@ -67,11 +70,11 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
   $mail->SMTPSecure = "ssl"; // sets the prefix to the servier
   $mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
   $mail->Port = 465; // set the SMTP port for the GMAIL server
-  $mail->Username = "suphawichtsd@gmail.com"; // GMAIL username
-  $mail->Password = "angelbeats10"; // GMAIL password
+  $mail->Username = "suphawichct@gmail.com"; // GMAIL username
+  $mail->Password = "Mm123456"; // GMAIL password
   $mail->From = "admin@sattagarden.com"; // "name@yourdomain.com";
   //$mail->AddReplyTo = "support@thaicreate.com"; // Reply
-  $mail->FromName = "Mr. Suphawich Sungkhavorn";  // set from Name
+  $mail->FromName = "Mr. Suphawich";  // set from Name
   $mail->Subject = "Satta Garden - Verify you account";
   $mail->Body = $msg;
   $mail->AddAddress($email, $firstname." ".$lastname); // to Address
@@ -110,7 +113,7 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
           <br />If have no email please check in junk mail or re-send mail here.
         </label>
         <br><br>
-        <button class="btn btn-info">Re-send Email</button>
+        <button class="btn btn-info" onclick="location.reload();">Re-send Email</button>
         <br><br>
         <label>Thank you for registration. Have a enjoy with us.</label>
       </div>
