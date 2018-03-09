@@ -7,8 +7,8 @@
 <?php require 'header.php'; ?>
 <body>
 	<div class="row content">
-		<div class="col-sm-1" style="background-color:lavender;"></div>
-		<div class="col-sm-10">
+		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-8">
 			<div class="row">
 				<div class="col-sm-12 text-center">
 					<br>
@@ -60,7 +60,7 @@
 				<div class="col-sm-3"></div>
 			</div>
 		</div>
-		<div class="col-sm-1" style="background-color:lavender;"></div>
+		<div class="col-sm-2" style="background-color:lavender;"></div>
 	</div>
 </body>
 </html>
