@@ -1,10 +1,10 @@
 .satta-event {
-     background-image: url("../picture/banner.jpg");
+    background-image: url('picture/1.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    /* background-color: #401222; */
+    background-color: #401222;
     padding: 10px 10px 50px 10px;
     margin-top: 65px
 }
