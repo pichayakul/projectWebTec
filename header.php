@@ -74,7 +74,7 @@
 			    	<!-- <input type="hidden" name="status" value="logout"> -->
 			    <a class="dropdown-item" id="btn-logout">Log out</a>
 			    <!-- </form> -->
-			  </div>			
+			  </div>
 			</div>
 		</div>
 	</div>
