@@ -47,12 +47,13 @@
 ?>
 <body>
 	<div class="row content">
-		<div class="col-sm-1" style="background-color:lavender;"></div>
-		<div class="col-sm-10">
+		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-8">
 			<div class="row">
 				<div class="col-sm-12 clearfix">
 					<br>
 					<a class="btn btn-primary btn-sm float-right" href="./manageuser.php">Management User</a>
+					<a class="btn btn-primary btn-sm float-right" href="./viewlog.php">Log</a>
 					<a class="btn btn-primary btn-sm float-right" href="./eventreport.php">Report</a>
 					<br>
 					<hr>
@@ -128,7 +129,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-sm-1" style="background-color:lavender;"></div>
+		<div class="col-sm-2" style="background-color:lavender;"></div>
 	</div>
 </body>
 </html>
