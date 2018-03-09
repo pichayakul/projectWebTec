@@ -22,7 +22,6 @@
 		require './database/add_info_to_session.php';
 		$is_show_login = "noshow";
 		$is_show_profile = "";
-		echo "into login-username";
 	}
 
 	if (isset($_POST['status'])) {
@@ -94,7 +93,6 @@
 	      <div class="modal-body text-center clearfix ml-4 mr-4" id="login-content">
 	      	<br>
 	      	<form id="login-form" method="post" action="">
-
 	      		<div class="form-group">
 	      			<label class="float-left">Username</label>
 	      			<input type="text" id="login-username" class="form-control" name="login-username" placeholder="Username">
@@ -103,11 +101,9 @@
 	      			<label class="float-left">Password</label>
 	      			<input type="password" id="login-password" class="form-control" name="login-password" placeholder="Password">
 	      		</div>
-
 	      		<input type="hidden" id="login-status" name="login-status" value="0">
 	      		<label id="alert-login" class="noshow">username or password are wrong.</label>
 	      		<br>
-
 	      		<a class="btn btn-success" name="submit-login" id="login-form-submit" value="Log in">Log in</a>
 	      		<label>or</label>
 	      		<a class="btn btn-success" onclick="location.reload();">Cancel</a>
