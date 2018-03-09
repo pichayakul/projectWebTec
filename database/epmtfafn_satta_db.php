@@ -453,31 +453,27 @@ class Database
 		$statement = $this->conn->prepare('INSERT INTO event_assessment VALUES (:noevent,:noassessment,:answer)');
 		$statement->execute([':noevent'=>$noevent,':noassessment'=>$noassessment,':answer'=>$answer]);
 	}
-
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
-															$image_path,$vdo_path,$description,$create_date_time,
-<<<<<<< HEAD
-															$start_date_time,$end_date_time,$location,$pre_condition) {
-		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:pre_condition WHERE noevent=:noevent' );
-=======
-															$start_date_time,$end_date_time,$location,$condition) {
-		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:condition WHERE noevent=:noevent' );
->>>>>>> 0fd802b6dc5bd2ea1b93a9936303c113addf0c55
-		$statement->execute([':noevent' => $noevent,
-												':username' => $username,
-												':name' => $name,
-												':type' => $type,
-												':current' => $current,
-												':capacity' => $capacity,
-												':price' => $price,
-												':image_path' => $image_path,
-												':vdo_path' => $vdo_path,
-												':description' => $description,
-												':create_date_time' => $create_date_time,
-												':start_date_time' => $start_date_time,
-												':end_date_time' => $end_date_time,
-												':location' => $location,
-												':pre_condition' => $pre_condition]); //  set no event
+	$image_path,$vdo_path,$description,$create_date_time,
+	$start_date_time,$end_date_time,$location,$pre_condition,$lat,$lon) {
+	$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:pre_condition,lat=:lat,lon=:lon WHERE noevent=:noevent' );
+	$statement->execute([':noevent' => $noevent,
+	':username' => $username,
+	':name' => $name,
+	':type' => $type,
+	':current' => $current,
+	':capacity' => $capacity,
+	':price' => $price,
+	':image_path' => $image_path,
+	':vdo_path' => $vdo_path,
+	':description' => $description,
+	':create_date_time' => $create_date_time,
+	':start_date_time' => $start_date_time,
+	':end_date_time' => $end_date_time,
+	':location' => $location,
+	':pre_condition' => $pre_condition,
+	':lat'=> $lat,
+	':lon'=> $lon]); //  set no event
 	}
 
 

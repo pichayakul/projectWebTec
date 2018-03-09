@@ -5,7 +5,7 @@ $uploadOk = 1;
 if ((isset($_POST["btnSetting"]) || isset($_POST["btnCreate"])) && isset($_POST["username"]) ){
     $username=$_POST["username"];
     $title=$_POST["title"];
-    $target_dir = "webUpload/".$title."/organizerUpload"."/";
+    $target_dir = "images/events/".$title."/organizerUpload"."/";
     $nameFile=$_FILES["vdoUpload"]["name"];   
     if (!is_dir($target_dir)) {
         mkdir($target_dir, 0777, true);
@@ -56,8 +56,8 @@ else if (isset($_POST["submitM"])){
     $username=$_POST["username"];
     $title=$_POST["title"];
     // echo $_FILES["fileToUpload"]["name"][0];
-    $target_dirM = "webUpload/".$title."/attendantUploads"."/".$username."/preCondition".'/';
-    $target_dirPay = "webUpload/".$title."/attendantUploads"."/".$username."/payment".'/';
+    $target_dirM = "images/events/".$title."/attendantUploads"."/".$username."/preCondition".'/';
+    $target_dirPay = "images/events/".$title."/attendantUploads"."/".$username."/payment".'/';
     if (!is_dir($target_dirM)) {
         mkdir($target_dirM, 0777, true);
     }
@@ -166,7 +166,7 @@ else if(isset($_POST["submit"]) && isset($_POST["username"])) {
     $username=$_POST["username"];
     $title=$_POST["title"];
     // echo $_FILES["fileToUpload"]["name"][0];
-    $target_dir = "webUpload/".$title."/attendantUploads"."/".$username."/";
+    $target_dir = "images/events/".$title."/attendantUploads"."/".$username."/";
     if (!is_dir($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
