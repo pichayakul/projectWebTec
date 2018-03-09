@@ -238,6 +238,21 @@ class Database
 		return $ret;
 	}
 
+	public function get_event_and_seminar_sort_desc_alive() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event WHERE status=0 ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;		
+	}
+
+
+	public function get_event_and_seminar_sort_desc_all() {
+		$ret = array();
+		$statement = $this->conn->query('SELECT * FROM event ORDER BY current DESC');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		return $ret;
+	}
+
 
 	/**
 	*  Get all event
@@ -320,7 +335,6 @@ class Database
 								[join_date_time] =>
 								[payment_path] =>
 								[pre_path] =>
-								[qrcode] =>
 							)
 							...
 						)
@@ -421,7 +435,7 @@ class Database
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
 															$image_path,$vdo_path,$description,$create_date_time,
 															$start_date_time,$end_date_time,$location,$condition) {
-		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,condition=:condition WHERE noevent=:noevent' );
+		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:condition WHERE noevent=:noevent' );
 		$statement->execute([':noevent' => $noevent,
 												':username' => $username,
 												':name' => $name,
@@ -617,14 +631,15 @@ class Database
 
 
 	public function update_topic($notopic,$noevent,$username,$header,$description,$date_time) {
-		$statement = $this->conn->prepare('UPDATE topic SET noevent=:noevent,username=:username,header=:header,description=:description,date_time=:date_time WHERE notopic=$notopic' );
-		$statement->execute([':notopic' => $notopic,
-												':noevent' => $noevent,
-												':username' => $username,
-												':header' => $header,
-												':description' => $description,
-												':date_time' => $date_time]); //  set no event
-	}
+	  $statement = $this->conn->prepare('UPDATE topic SET noevent=:noevent,username=:username,header=:header,description=:description,date_time=:date_time WHERE notopic=:notopic' );
+	  $statement->execute([':notopic' => $notopic,
+	            ':noevent' => $noevent,
+	            ':username' => $username,
+	            ':header' => $header,
+	            ':description' => $description,
+	            ':date_time' => $date_time]); //  set no event
+
+	 }
 
 
 	public function delete_topiccomment_notopic($notopic) {
@@ -685,16 +700,18 @@ class Database
 	}
 
 
+	public function create_log($username, $date_time, $action) {
+		$statement = $this->conn->prepare('INSERT INTO user_log VALUES (0,:username,:date_time,:action)' );
+		$statement->execute([':username' => $username,':date_time' => $date_time, ':action' => $action]); //  set no event
+	}
+
+
 	/********************************************************************************/
 			/* OTHER */
 	/********************************************************************************/
 
-	public function create_account($username,$password,$nickname,$position,$first_name,$last_name,$gender,$age,
-												$email,$image) {
-		$qrcode = "DASGHGSDFSAFAF";
-		$start_date_time = 0;
-		$last_login_date_time = 0;
-		$statement = $this->conn->prepare('INSERT INTO account VALUES (username=:username,password=:password,nickname=:nickname,position=:position,first_name=:first_name,last_name=:last_name,gender=:gender,age=:age,email=:email,image=:image,start_date_time=:start_date_time,last_login_date_time=:last_login_date_time,status_email=0,qrcode=:qrcode,status_ban=0);' );
+	public function create_account($username,$password,$nickname,$position,$first_name,$last_name,$gender,$age,$email,$image,$start_date_time) {
+		$statement = $this->conn->prepare('INSERT INTO account (username,password,nickname,position,first_name, last_name, gender, age, email, image, start_date_time, status_email, status_ban) VALUES (:username,:password,:nickname,:position,:first_name,:last_name,:gender,:age,:email,:image,:start_date_time,0,0);' );
 		$statement->execute([':username' => $username,
 												':password' => $password,
 												':nickname' => $nickname,
@@ -705,15 +722,13 @@ class Database
 												':age' => $age,
 												':email' => $email,
 												':image' => $image,
-												':start_date_time' => $start_date_time,
-												':last_login_date_time' => $last_login_date_time,
-												':qrcode' => $qrcode]); //  set username
+												':start_date_time' => $start_date_time]); //  set username
 	}
 
 
 	public function update_account($username,$password,$nickname,$position,$first_name,$last_name,
-												$email,$image,$qrcode) {
-		$statement = $this->conn->prepare('UPDATE account SET password=:password,nickname=:nickname,position=:position,first_name=:first_name,last_name=:last_name,email=:email,image=:image,qrcode=:qrcode WHERE username=:username' );
+												$email,$image) {
+		$statement = $this->conn->prepare('UPDATE account SET password=:password,nickname=:nickname,position=:position,first_name=:first_name,last_name=:last_name,email=:email,image=:image WHERE username=:username' );
 		$statement->execute([':username' => $username,
 												':password' => $password,
 												':nickname' => $nickname,
@@ -721,8 +736,30 @@ class Database
 												':first_name' => $first_name,
 												':last_name' => $last_name,
 												':email' => $email,
-												':image' => $image,
-												':qrcode' => $qrcode]); //  set username
+												':image' => $image]); //  set username
+	}
+
+
+	public function update_account_keyword($username, $key, $value) {
+		$statement = $this->conn->prepare('UPDATE account SET username=:username WHERE username=:username');
+		if ($key == 'first_name') {
+			$statement = $this->conn->prepare('UPDATE account SET first_name=:value WHERE username=:username');
+		} else if ($key == 'last_name') {
+			$statement = $this->conn->prepare('UPDATE account SET last_name=:value WHERE username=:username');
+		} else if ($key == 'nickname') {
+			$statement = $this->conn->prepare('UPDATE account SET nickname=:value WHERE username=:username');
+		} else if ($key == 'gender') {
+			$statement = $this->conn->prepare('UPDATE account SET gender=:value WHERE username=:username');
+		} else if ($key == 'age') {
+			$statement = $this->conn->prepare('UPDATE account SET age=:value WHERE username=:username');
+		} else if ($key == 'email') {
+			$statement = $this->conn->prepare('UPDATE account SET email=:value WHERE username=:username');
+		} else if ($key == 'password') {
+			$statement = $this->conn->prepare('UPDATE account SET password=:value WHERE username=:username');
+		} else if ($key == 'position') {
+			$statement = $this->conn->prepare('UPDATE account SET position=:value WHERE username=:username');
+		}
+		$statement->execute([':username' => $username,':value' => $value]);		
 	}
 
 
@@ -731,6 +768,13 @@ class Database
 		$statement->execute([':username' => $username]);
 	}
 
+
+	public function infoUsername($username) {
+	  $statement = $this->conn->prepare('SELECT * FROM account WHERE username=:username' );
+	  $statement->execute([':username' => $username]); //  set username
+	  $result = $statement->fetchAll(PDO::FETCH_ASSOC)[0]; //  fetch all to Array in Array
+	  return $result;
+	 }
 
 	public function get_account_all() {
 		$ret = array();
@@ -746,8 +790,20 @@ class Database
 	*  @return true/false (have/don't have)
 	*/
 	public function hasUsername($username) {
-		$statement = $this->conn->prepare('SELECT * FROM Account WHERE username=:username' );
+		$statement = $this->conn->prepare('SELECT * FROM account WHERE username=:username' );
 		$statement->execute([':username' => $username]); //  set username
+		$result = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		if (count($result)==1) { //  Have username in Account table
+			return true;
+		} else { //  Don't have username in Account table
+			return false;
+		}
+	}
+
+
+	public function hasEmail($email) {
+		$statement = $this->conn->prepare('SELECT * FROM account WHERE email=:email' );
+		$statement->execute([':email' => $email]); //  set username
 		$result = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
 		if (count($result)==1) { //  Have username in Account table
 			return true;
@@ -817,15 +873,16 @@ class Database
 			/* TEST */
 	/********************************************************************************/
 
-$db = new Database();
-$db->openDatabase();
-echo "COnnect";
-echo "<pre>";
-print_r($db->get_event_sort_desc_all());
-echo "</pre>";
+// $db = new Database();
+// $db->openDatabase();
+// echo "COnnect";
+// echo "<pre>";
+// print_r($db->get_event_sort_desc_all());
+// echo "</pre>";
 // $db->delete_topiccomment_notopic(1);
 // echo "Opened Database.<br />";
 
+// $db->create_account('suphawich', '123456', 'Mark', 'organizer', 'Suphawich', 'Sungkhavorn', 'm', 21, 'suphawich.s@ku....', './images/avatar...', '2018-03-08 23:0...');
 // $db->create_assessment(1, 4);
 // // print_r($db->gene_noquestion(1));
 // // $db->confirm_eventmember(1,"hello123");
@@ -835,8 +892,8 @@ echo "</pre>";
 // // $db->create_topic(2,1,"supanut","ทดสอบการตั้งกระทู้","ทดสอบเฉยๆ",0);
 // $db->create_event("supanut","ทดสอบ","event",10,20,5000,"","","ทดสอบ",0,0,0,"ไม่มี","ไม่มี",0);
 
-$db->closeDatabase();
-echo "Closed";
+// $db->closeDatabase();
+// echo "Closed";
 // echo "Closed Database.<br />";
 // // echo $db->encodePassword("hello123");
 // // $db->decodePassword("4QXX[");
