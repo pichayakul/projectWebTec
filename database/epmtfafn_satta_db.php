@@ -92,6 +92,32 @@ class Database
 	}
 
 
+	public function add_eventmember($noevent,$username,$request_date_time,$payment_path,$pre_path,$ticket) {
+	  $statement = $this->conn->prepare('INSERT INTO eventmember VALUES (:noevent,:username,status="request",:request_date_time,join_date_time="0000-00-00 00:00:00",:payment_path,:pre_path,qrcode=0,:tickets)');
+	  $statement->execute([':noevent' => $noevent,
+	            ':username' => $username,
+	            ':request_date_time' => $request_date_time,
+	            ':payment_path' => $payment_path,
+	            ':pre_path' => $pre_path,
+	            ':tickets' => $ticket]); //  set no event
+	  
+	  
+	 }
+
+	 
+	 public function update_eventmember($noevent,$username,$request_date_time,$payment_path,$pre_path,$ticket) {
+	  $statement = $this->conn->prepare('UPDATE eventmember SET request_date_time=:request_date_time,payment_path=:payment_path,pre_path=:pre_path,tickets=:tickets where username=:username and noevent=:noevent');
+	  $statement->execute([':noevent' => $noevent,
+	            ':username' => $username,
+	            ':request_date_time' => $request_date_time,
+	            ':payment_path' => $payment_path,
+	            ':pre_path' => $pre_path,
+	            ':tickets' => $ticket]); //  set no event
+	  
+	  
+	 }
+
+
 	public function get_event_username($username) {
 		try {
 			$ret = array();
@@ -359,46 +385,371 @@ class Database
 	}
 
 
-	/**
-	*  Creation event
-	*  @param event number
-						username
-						name
-						type ("seminar" or "event")
-						current (number of member in event)
-						capacity (max member in event)
-						price (cost of ticket)
-						image_path (many image path seperate with ";")
-						vdo_path (many video path seperate with ";")
-						description (desctiption for purpose text only)
-						date time (use DateTimePicker)
-						location (coordinates)
-						condition (pre-require of event)
-	*/
-	public function create_event($username,$name,$type,$current,$capacity,$price,
-															$image_path,$vdo_path,$description,$create_date_time,
-															$start_date_time,$end_date_time,$location,$condition) {
-		$noevent = 0;
-		$statement = $this->conn->prepare('INSERT INTO event VALUES (:noevent,:username,:name,:type,:current,:capacity,:price,:image_path,
-			:vdo_path,:description,:create_date_time,:start_date_time,:end_date_time,:location,:condition,status=0)' );
-		$statement->execute([':noevent' => $noevent,
-												':username' => $username,
-												':name' => $name,
-												':type' => $type,
-												':current' => $current,
-												':capacity' => $capacity,
-												':price' => $price,
-												':image_path' => $image_path,
-												':vdo_path' => $vdo_path,
-												':description' => $description,
-												':create_date_time' => $create_date_time,
-												':start_date_time' => $start_date_time,
-												':end_date_time' => $end_date_time,
-												':location' => $location,
-												':condition' => $condition]); //  set no event
-		// $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
-	}
+/*  Get event from event number (only one)
+ *  @return Array
+      (
+       [noevent] =>
+       [username] =>
+       [name] =>
+       [type] =>
+       [current] =>
+       [capacity] =>
+       [price] =>
+       [image_path] =>
+       [vdo_path] =>
+       [description] =>
+       [create_date_time] =>
+       [start_date_time] =>
+       [end_date_time] =>
+       [location] =>
+       [condition] =>
+       [status] =>
+      )
+ */
+ public function get_noevent($noevent) {
+  try {
+   $ret = array();
+   $statement = $this->conn->prepare('SELECT * FROM event WHERE noevent=:noevent' );
+   $statement->execute([':noevent' => $noevent]); //  set no event
+   $ret = $statement->fetchAll(PDO::FETCH_ASSOC)[0]; //  fetch all and get array
+   return $ret;
+  } catch (PDOException $e) {
+   echo "ERROR get_noevent($noevent)";
+  }
+ }
+ public function add_eventmember($noevent,$username,$request_date_time,$payment_path,$pre_path,$ticket) {
+  $statement = $this->conn->prepare('INSERT INTO eventmember VALUES (:noevent,:username,status="request",:request_date_time,join_date_time="0000-00-00 00:00:00",:payment_path,:pre_path,qrcode=0,:tickets)');
+  $statement->execute([':noevent' => $noevent,
+            ':username' => $username,
+            ':request_date_time' => $request_date_time,
+            ':payment_path' => $payment_path,
+            ':pre_path' => $pre_path,
+            ':tickets' => $ticket]); //  set no event
+  
+  
+ }
 
+ public function update_eventmember($noevent,$username,$request_date_time,$payment_path,$pre_path,$ticket) {
+  $statement = $this->conn->prepare('UPDATE eventmember SET request_date_time=:request_date_time,payment_path=:payment_path,pre_path=:pre_path,tickets=:tickets where username=:username and noevent=:noevent');
+  $statement->execute([':noevent' => $noevent,
+            ':username' => $username,
+            ':request_date_time' => $request_date_time,
+            ':payment_path' => $payment_path,
+            ':pre_path' => $pre_path,
+            ':tickets' => $ticket]); //  set no event
+  
+  
+ }
+
+
+
+ public function get_event_username($username) {
+  try {
+   $ret = array();
+   $statement = $this->conn->prepare('SELECT * FROM event WHERE username=:username' );
+   $statement->execute([':username' => $username]); //  set no event
+   $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all and get array
+   return $ret;
+  } catch (PDOException $e) {
+   echo "ERROR get_noevent($noevent)";
+  }
+ }
+
+
+ /**
+ *  Get all event
+ *  @return Array
+      (
+       [0] => Array
+       (
+        [noevent] =>
+        [username] =>
+        [name] =>
+        [type] =>
+        [current] =>
+        [capacity] =>
+        [price] =>
+        [image_path] =>
+        [vdo_path] =>
+        [description] =>
+        [create_date_time] =>
+        [start_date_time] =>
+        [end_date_time] =>
+        [location] =>
+        [condition] =>
+        [status] =>
+       )
+       ...
+      )
+ */
+ public function get_event_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="event"');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ public function get_event_sort_desc_alive() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="event" AND status=0 ORDER BY current DESC');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ public function get_event_sort_desc_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="event" ORDER BY current DESC');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ /**
+ *  Get all seminar
+ *  @return Array
+      (
+       [0] => Array
+       (
+        [noevent] =>
+        [username] =>
+        [name] =>
+        [type] =>
+        [current] =>
+        [capacity] =>
+        [price] =>
+        [image_path] =>
+        [vdo_path] =>
+        [description] =>
+        [create_date_time] =>
+        [start_date_time] =>
+        [end_date_time] =>
+        [location] =>
+        [condition] =>
+        [status] =>
+       )
+       ...
+      )
+ */
+ public function get_seminar_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="seminar"');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ public function get_seminar_sort_desc_alive() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="seminar" AND status=0 ORDER BY current DESC');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ public function get_seminar_sort_desc_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="seminar" ORDER BY current DESC');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ /**
+ *  Get all event
+ *  @return Array
+      (
+       [0] => Array
+       (
+        [noevent] =>
+        [username] =>
+        [name] =>
+        [type] =>
+        [current] =>
+        [capacity] =>
+        [price] =>
+        [image_path] =>
+        [vdo_path] =>
+        [description] =>
+        [create_date_time] =>
+        [start_date_time] =>
+        [end_date_time] =>
+        [location] =>
+        [condition] =>
+        [status] =>
+       )
+       ...
+      )
+ */
+ public function get_event_and_seminar_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+ public function get_event_and_seminar_sort_desc_alive() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE status=0 ORDER BY current DESC');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;  
+ }
+
+
+ public function get_event_and_seminar_sort_desc_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event ORDER BY current DESC');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ /**
+ *  Get all event
+ *  @return Array
+      (
+       [0] => Array
+       (
+        [noevent] =>
+        [username] =>
+        [name] =>
+        [type] =>
+        [current] =>
+        [capacity] =>
+        [price] =>
+        [image_path] =>
+        [vdo_path] =>
+        [description] =>
+        [create_date_time] =>
+        [start_date_time] =>
+        [end_date_time] =>
+        [location] =>
+        [condition] =>
+        [status] =>
+       )
+       ...
+      )
+ */
+ public function get_event_available_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="event" AND status=0');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ /**
+ *  Get all seminar
+ *  @return Array
+      (
+       [0] => Array
+       (
+        [noevent] =>
+        [username] =>
+        [name] =>
+        [type] =>
+        [current] =>
+        [capacity] =>
+        [price] =>
+        [image_path] =>
+        [vdo_path] =>
+        [description] =>
+        [create_date_time] =>
+        [start_date_time] =>
+        [end_date_time] =>
+        [location] =>
+        [condition] =>
+        [status] =>
+       )
+       ...
+      )
+ */
+ public function get_seminar_available_all() {
+  $ret = array();
+  $statement = $this->conn->query('SELECT * FROM event WHERE type="seminar" AND status=0');
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+  return $ret;
+ }
+
+
+ /**
+ *  Get all member of that event
+ *  @return Array
+      (
+       [0] => Array
+       (
+        [noevent] =>
+        [username] =>
+        [status] =>
+        [request_date_time] =>
+        [join_date_time] =>
+        [payment_path] =>
+        [pre_path] =>
+       )
+       ...
+      )
+ */
+ public function get_eventmember_all($noevent) {
+  $ret = array();
+  $statement = $this->conn->prepare('SELECT * FROM eventmember WHERE noevent=:noevent');
+  $statement->execute([':noevent' => $noevent]); //  set no event
+  $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all and get array
+  return $ret;
+ }
+
+
+ /**
+ *  Confirmation (Accepted) member as requested
+ *  @param event number amd username
+ */
+ public function confirm_eventmember($noevent, $username) {
+  $query = 'UPDATE eventmember SET status="accepted" WHERE noevent=:noevent AND username=:username';
+  $statement = $this->conn->prepare($query);
+  $statement->execute([':noevent' => $noevent, ':username' => $username]); //  set no event
+ }
+
+
+ /**
+ *  Creation event
+ *  @param event number
+      username
+      name
+      type ("seminar" or "event")
+      current (number of member in event)
+      capacity (max member in event)
+      price (cost of ticket)
+      image_path (many image path seperate with ";")
+      vdo_path (many video path seperate with ";")
+      description (desctiption for purpose text only)
+      date time (use DateTimePicker)
+      location (coordinates)
+      condition (pre-require of event)
+ */
+  public function create_event($username,$name,$type,$current,$capacity,$price,
+               $image_path,$vdo_path,$description,$create_date_time,
+               $start_date_time,$end_date_time,$location,$condition,$lat,$lot) {
+  $noevent = 0;
+  $statement = $this->conn->prepare('INSERT INTO event VALUES (:noevent,:username,:name,:type,:current,:capacity,:price,:image_path,
+   :vdo_path,:description,:create_date_time,:start_date_time,:end_date_time,:location,:pre_condition,status=0,:lat,:lot)' );
+  $statement->execute([':noevent' => $noevent,
+            ':username' => $username,
+            ':name' => $name,
+            ':type' => $type,
+            ':current' => $current,
+            ':capacity' => $capacity,
+            ':price' => $price,
+            ':image_path' => $image_path,
+            ':vdo_path' => $vdo_path,
+            ':description' => $description,
+            ':create_date_time' => $create_date_time,
+            ':start_date_time' => $start_date_time,
+            ':end_date_time' => $end_date_time,
+            ':location' => $location,
+            ':pre_condition' => $condition,
+            ':lat' => $lat,
+            ':lot' => $lot]);
+	}
 
 	/**
 	*  Creation question
@@ -434,8 +785,8 @@ class Database
 
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
 															$image_path,$vdo_path,$description,$create_date_time,
-															$start_date_time,$end_date_time,$location,$condition) {
-		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:condition WHERE noevent=:noevent' );
+															$start_date_time,$end_date_time,$location,$condition,$lat,$lot) {
+		$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:condition,lat=:lat,lot=:lot WHERE noevent=:noevent' );
 		$statement->execute([':noevent' => $noevent,
 												':username' => $username,
 												':name' => $name,
@@ -450,7 +801,9 @@ class Database
 												':start_date_time' => $start_date_time,
 												':end_date_time' => $end_date_time,
 												':location' => $location,
-												':condition' => $condition]); //  set no event
+												':condition' => $condition,
+												':lat' => $lat,
+												':lot' => $lot]); //  set no event
 	}
 
 
