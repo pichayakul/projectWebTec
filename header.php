@@ -1,6 +1,6 @@
 <head>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<!-- <link href="./css/bootstrap.min.css" rel="stylesheet"> -->
+	<meta charset="utf-8">
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
 	<link href="./css/theme.css" rel="stylesheet" >
 </head>
 <body>
@@ -34,19 +34,22 @@
 
 	if (isset($_POST['status'])) {
 		if ($_POST['status'] == "viewprofile") {
-			if ($_POST['submit'] == "Save") {
-				require './database/epmtfafn_satta_db.php';
-				$db = new Database();
-				$db->openDatabase();
-				$image_path = $_SESSION['image'];
-				if (isset($_POST['image']) && $_POST['image'] != "") {
-					$image_path = $_POST['image'];
-				}
-				$db->update_account($_SESSION['username'],$_SESSION['password'],$_POST['nickname'],$_SESSION['position'],
-						$_POST['first_name'],$_POST['last_name'],$_POST['email'],$image_path);
-				$db->closeDatabase();
-				require './database/add_info_to_session.php';
+			require './database/epmtfafn_satta_db.php';
+			$db = new Database();
+			$db->openDatabase();
+			$image_path = $_SESSION['image'];
+			if (isset($_POST['image']) && $_POST['image'] != "") {
+				$image_path = $_POST['image'];
 			}
+			if ($_POST['password'] == "") {
+				$encrypt = $_SESSION['password'];
+			} else {
+				$encrypt = password_hash($_POST['password'], PASSWORD_DEFAULT);
+			}
+			$db->update_account($_SESSION['username'],$encrypt,$_POST['nickname'],$_SESSION['position'],
+					$_POST['first_name'],$_POST['last_name'],$_POST['email'],$image_path);
+			$db->closeDatabase();
+			require './database/add_info_to_session.php';
 		}
 	}
 

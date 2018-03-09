@@ -50,9 +50,8 @@ $output = 0;
 $arroutput = array();
 $arroutput['output'] = $output;
 if (hasUsername($username)) {
-	$respass = getPassword($username);
-	$res = strcmp($password, $respass);
-	if ($res == 0) {
+	$encrypt = getPassword($username);
+	if (password_verify($password, $encrypt)) {
 		$output = 1;
 	}
 }

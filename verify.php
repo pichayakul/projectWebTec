@@ -3,6 +3,8 @@
 <head>
 	<title>Verify</title>
 	<meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <?php require './header.php';?>
 <?php
@@ -34,11 +36,12 @@ function create_account($username,$password,$nickname,$position,$first_name,$las
   $serverpassword = "";
   $dbname = "epmtfafn_satta";
 
+  $encrypt = password_hash($password, PASSWORD_DEFAULT);
   $conn = new PDO("mysql:host=$servername;dbname=$dbname", $serverusername, $serverpassword);
   $conn->exec("set names utf8");
   $statement = $conn->prepare('INSERT INTO account (username,password,nickname,position,first_name,last_name,gender,age,email,image,start_date_time,status_email,status_ban) VALUES (:username,:password,:nickname,:position,:first_name,:last_name,:gender,:age,:email,:image,:start_date_time,0,0);' );
   $statement->execute([':username' => $username,
-                      ':password' => $password,
+                      ':password' => $encrypt,
                       ':nickname' => $nickname,
                       ':position' => $position,
                       ':first_name' => $first_name,
