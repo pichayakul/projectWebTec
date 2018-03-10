@@ -91,7 +91,6 @@
 			$('#profile-form-submit').click(function(e) {
 				password = $('#profile-password').val();
 				confirmpassword = $('#profile-confirmpassword').val();
-				currentpassword = $('#profile-currentpassword').val();
 				nickname = $('#profile-nickname').val();
 				firstname = $('#profile-firstname').val();
 				lastname = $('#profile-lastname').val();
