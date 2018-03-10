@@ -1,11 +1,13 @@
+
 #imageSet{
     padding-top: 30px;
 }
 #teserVDO{
     padding: 20px;
 }
+
 .background{
-    background-color: #FFF1CE;  
+    background-color: #FFFFFF;  
 }
 .display{
     display:block;
@@ -76,13 +78,16 @@
     margin-left: 420px;
 }
 #btnClose:hover{
-    background-color: aqua;
+    background-color: aqua; 
+    
     
 }
+
 body{
     /* background-image:url('../webUpload/bg.jpg'); */
     /* background-size: cover; */
     /* background-attachment: fixed; */
+    
     overflow:auto;
     padding: 40px;
     margin: 100px;

@@ -11,8 +11,38 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/showAll.css">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Mitr|Nanum+Gothic|Noto+Serif|Ubuntu" rel="stylesheet">
   </head>
-  <body>
+  <body onload="myFunction()" style="margin:0;" id ="event-body">
+    <div id="min-loader">
+  <div class="holder">
+    <div class="box"></div>
+  </div>
+  <div class="holder">
+    <div class="box"></div>
+  </div>
+  <div class="holder">
+    <div class="box"></div>
+  </div>
+</div>
+
+
+
+<script>
+var myVar;
+
+function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+
+function showPage() {
+  document.getElementById("min-loader").style.display = "none";
+  document.getElementById("satta").style.display = "block";
+  document.getElementById("event-body").style.background="whitesmoke";
+}
+</script>
+
+
     <?php
     $db = new Database();
     $db->openDatabase();
@@ -22,9 +52,80 @@
     $name = '';
     $location = '';
     $type = '';
-
     $eventAll = $db->get_event_available_all() ;
     $seminarAll =$db->get_seminar_available_all();
+    function DateEng($strDate){
+      $strYear = date("Y",strtotime($strDate));
+      $strMonth= date("n",strtotime($strDate));
+      $strDay= date("j",strtotime($strDate));
+      $strHour= date("H",strtotime($strDate));
+      $strMinute= date("i",strtotime($strDate));
+      $strSeconds= date("s",strtotime($strDate));
+      $strMonthCut = Array("","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC");
+      $strMonthEng=$strMonthCut[$strMonth];
+      return array("$strDay/$strMonthEng/$strYear ","$strHour:$strMinute");
+  }
+    function show_arive($data,$text)
+    {
+      $round=0;
+      $event = '';
+
+
+        while ($round<count($data)){
+          $name = $data[count($data)-1-$round]["name"];
+          $imagePath = $data[count($data)-1-$round]["imagePath"];
+          $imagePath = explode(",",$imagePath);
+          $imagePath=$imagePath[0];
+          $date_time = $data[count($data)-1-$round]["start_date_time"];
+          $end_date = $data[count($data)-1-$round]["end_date_time"];
+          $location = $data[count($data)-1-$round]["location"];
+          $noevent = $data[count($data)-1-$round]["noevent"];
+          $username =  $data[count($data)-1-$round]["username"];
+          $sdate = DateEng($date_time);
+          $endae = DateEng($end_date);
+
+          if(strpos($name,$text) !== false || strpos($location,$text) !==false || strpos($username,$text) !==false){
+
+            $contents = '<div class="col-sm-6 col-md-4 animate-bottom">
+                    <div class="event-container">
+
+                    <a href = "./eventMain.php?noevent='.$noevent.'&username='.$username.'">
+                    <div class="thumbnail" >
+                        <div class="event-image" >
+                            <img src='.$imagePath.'  >
+                        </div>
+                        <div class="caption">
+                            <div class="text-ellipsis">
+                                <strong>'.$name.'</strong>
+                            </div>
+                            <div class="text-ellipsis">
+                                <i class="glyphicon glyphicon-calendar" style="font-size:20px;"></i> '.$sdate[0].' - '.$endae[0].'
+                            </div>
+                            <div class="text-ellipsis">
+                                <i class="fa fa-clock-o" style="font-size:20px;"></i>   '.$sdate[1].' - '.$endae[1].'
+                            </div>
+
+                            <div class="text-ellipsis">
+                                <i class="fa fa-map-marker" style="font-size:20px; margin-Left:2px;"></i>  '.$location.'
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            </div>';
+
+              $event = $event.$contents;
+
+
+
+          }
+
+
+
+            $round++;
+    }
+    return $event;
+  }
     function showContents($data){
 
       $round=0;
@@ -32,24 +133,20 @@
 
 
         while ($round<count($data)){
-          $name = $data[$round]["name"];
-          $imagePath = $data[$round]["imagePath"];
+          $name = $data[count($data)-1-$round]["name"];
+          $imagePath = $data[count($data)-1-$round]["imagePath"];
           $imagePath = explode(",",$imagePath);
           $imagePath=$imagePath[0];
-          $date_time = $data[$round]["start_date_time"];
-          $location = $data[$round]["location"];
-          $noevent = $data[$round]["noevent"];
-          $username =  $data[$round]["username"];
-          $allStart_date_time=explode(" ",$date_time);
-          $date=explode("-",$allStart_date_time[0]);
-          $year=$date[0];
-          $month=$date[1];
-          $day=$date[2];
-          $timeD=explode(":",$allStart_date_time[1]);
-          $time=$timeD[0].":".$timeD[1];
+          $date_time = $data[count($data)-1-$round]["start_date_time"];
+          $end_date = $data[count($data)-1-$round]["end_date_time"];
+          $location = $data[count($data)-1-$round]["location"];
+          $noevent = $data[count($data)-1-$round]["noevent"];
+          $username =  $data[count($data)-1-$round]["username"];
+          $sdate = DateEng($date_time);
+          $endae = DateEng($end_date);
 
-          $contents = '<div class="col-sm-6 col-md-4">
-                  <div class="event-container">
+          $contents = '<div class="col-sm-6 col-md-4 animate-bottom">
+                  <div class="event-container"  style = "box-shadow:0 0 5px;">
 
                   <a href = "./eventMain.php?noevent='.$noevent.'&username='.$username.'">
                   <div class="thumbnail" >
@@ -61,14 +158,14 @@
                               <strong>'.$name.'</strong>
                           </div>
                           <div class="text-ellipsis">
-                              <i class="glyphicon glyphicon-calendar" style="font-size:20px;"></i>'.$day.''."/".''.$month.'/'.$year.'
+                              <i class="glyphicon glyphicon-calendar" style="font-size:20px;"></i> '.$sdate[0].' - '.$endae[0].'
                           </div>
                           <div class="text-ellipsis">
-                              <i class="fa fa-clock-o" style="font-size:20px;"></i>'.$time.'
+                              <i class="fa fa-clock-o" style="font-size:20px;"></i>   '.$sdate[1].' - '.$endae[1].'
                           </div>
 
                           <div class="text-ellipsis">
-                              <i class="fa fa-map-marker" style="font-size:20px;"></i>'.$location.'
+                              <i class="fa fa-map-marker" style="font-size:20px; margin-Left:2px;"></i>  '.$location.'
                           </div>
                       </div>
                   </div>
@@ -99,18 +196,26 @@
                 $type = 'Seminars';
             # code...
           }
+          elseif ($_POST["type"]=="search") {
+                $max = count($eventAll) + count($seminarAll);
+                $type = "Result";
+                $events_aliv = show_arive($eventAll,$_POST["search"]);
+                $seminar_aliv  = show_arive($seminarAll,$_POST["search"]);
+                $events = $events_aliv.$seminar_aliv;
+
+            # code...
+          }
 
       }
 
 
       ?>
-      <div class="wrapper">
+      <div class="wrapper animate-bottom" id="satta">
 
      <div class="satta-event">
        <div class="container">
 
               <h1><?php echo $type ?></h1>
-
 
 
 

@@ -64,7 +64,7 @@
 		</div>
 		<div class="col-sm-6"></div>
 		<div class="col-sm-3">
-			<button type="button" id="btn-login" class="btn btn-info btn-lg login <?php echo $is_show_login;?>" data-toggle="modal" data-target="#myModal">Sign in / Sign up</button>
+			<button type="button" id="btn-login" class="btn btn-info btn-lg login <?php echo $is_show_login;?>" data-toggle="modal" data-target="#login-myModal">Sign in / Sign up</button>
 			
 			<div class="dropdown">
 				<button type="button" id="btn-profile" class="btn btn-primary dropdown-toggle login <?php echo $is_show_profile;?>" data-toggle="dropdown"><?php echo $_SESSION['first_name']." ".$_SESSION['last_name']; ?><span class="caret"></span></button>
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 	
-	<div id="myModal" class="modal fade" role="dialog">
+	<div id="login-myModal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
 	    <!-- Modal content-->
@@ -197,24 +197,6 @@
 
 	  </div>
 	</div>
-	<div id="myModal-verify" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-					<h4 class="text-center" id="login-header">Verify</h4>
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span></button>
-	        
-	        <!-- <h4 class="modal-title">Modal Header</h4> -->
-	      </div>
-	      <div class="modal-body text-center" id="login-content">
-	      	<label>Please, check email.</label>
-	      </div>
-	    </div>
-
-	  </div>
-	</div>
 	<script src="./js/jquery-3.3.1.min.js"></script>
 	<!-- <script src="./js/popper.min.js"></script> -->
 	<!-- <script src="./js/bootstrap.min.js"></script> -->
@@ -282,7 +264,7 @@
 	        		$('#alert-login').text("Account was banned.");
 	        		$('#alert-login').css('display', 'block');
 	        	} else {
-	        		$('#myModal').hide();
+	        		$('#login-myModal').hide();
 	        		$('#login-form').submit();
 	        	}
 		      }
