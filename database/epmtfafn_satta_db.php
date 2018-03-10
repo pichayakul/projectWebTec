@@ -679,6 +679,13 @@ class Database
 	}
 
 
+	public function delete_comment_notopic_nocomment($notopic,$nocomment) {
+
+	  $statement = $this->conn->prepare('DELETE FROM comment WHERE notopic=:notopic AND nocomment=:nocomment');
+	  $statement->execute([':notopic' => $notopic,':nocomment' => $nocomment]);
+
+	 }
+
 	/**
 	*  Generate new comment number that topic
 	*  @param topic number

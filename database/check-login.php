@@ -18,9 +18,13 @@ function hasUsername($loginusername) {
 	// $conn = null;
 	// return $result;
 	if (count($result)==1) { //  Have username in Account table
-		return true;
-	} else { //  Don't have username in Account table
-		return false;
+		if ($result[0]['status_ban'] == 0) {
+			return 1;
+		} else {
+			return 2;
+		}
+	} else {
+		return 0;
 	}
 }
 
@@ -49,14 +53,20 @@ $password = $_POST['password'];
 $output = 0;
 $arroutput = array();
 $arroutput['output'] = $output;
-if (hasUsername($username)) {
-	$encrypt = getPassword($username);
-	if (password_verify($password, $encrypt)) {
-		$output = 1;
+$key = hasUsername($username);
+if ($key == 1 || $key == 2) {
+	if ($key == 2) {
+		$output = 2;
+	} else {
+		$encrypt = getPassword($username);
+		if (password_verify($password, $encrypt)) {
+			$output = 1;
+		}
 	}
 }
 
 $arroutput['output'] = $output;
 // print_r($output);
 echo json_encode($arroutput);
+
 ?>

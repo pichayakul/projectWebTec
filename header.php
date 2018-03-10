@@ -112,13 +112,30 @@
 	      		<a class="btn btn-success" onclick="location.reload();">Cancel</a>
 	      	</form>
 	      	<br>
-	      	<a href="#">Forget Password</a>
+	      	<a href="#" id="btn-forget">Forget Password</a>
 	      	<hr>
+	      	<br>
 	      	<p class="text-center">
 	      		<a href="#" id="btn-register">Sign up</a>
 	      	</p>
 	      </div>
-	      <div class="modal-body ml-3 mr-3" id="register-content" style="display: none;">
+	      <div class="modal-body text-center clearfix ml-4 mr-4 noshow" id="forget-content">
+	      	<br>
+	      	<form id="forget-form" method="post" action="">
+	      		<div class="form-group">
+	      			<label class="float-left" id="forget-text-email">Email</label>
+	      			<input type="hidden" id="forget-has-email" name="has-email" value="false">
+	      			<input type="text" id="forget-email" class="form-control" name="forget-email" placeholder="Enter email">
+		      		<label id="forget-alert-email" class="noshow">---Email is already used.---</label>
+	      		</div>
+	      		<label id="alert-login" class="noshow">username or password are wrong.</label>
+	      		<br>
+	      		<a class="btn btn-success" name="submit-forget" id="forget-form-submit" value="Enter">Enter</a>
+	      		<label>or</label>
+	      		<a class="btn btn-success" id="forget-form-cancel">Cancel</a>
+	      	</form>
+	      </div>
+	      <div class="modal-body ml-3 mr-3 noshow" id="register-content">
 	      	<form id="register-form" method="POST" action="./verify.php" enctype="multipart/form-data">
 	      		<div class="form-group">
 		      		<label id="text-username">Username</label>
@@ -173,7 +190,7 @@
 	      		<br><br>
 	      		<a class="btn btn-primary" id="register-form-submit" name="register-form-submit">Register</a>
 	      		<label>or</label>
-	      		<a class="btn btn-secondary" onclick="location.reload();">Cancel</a>
+	      		<a class="btn btn-secondary" id="register-form-cancel">Cancel</a>
 	      	</form>
 	      </div>
 	    </div>
@@ -217,27 +234,36 @@
 				$('#register-content').css('display', 'none');
 				$('#submitted-content').css('display', 'none');
 				$('#login-header').text('Sign in');
-		    $('#register-form, #login-form').find(':input').each(function() {
-	        switch(this.type) {
-	            case 'password':
-	            case 'select-multiple':
-	            case 'select-one':
-	            case 'text':
-	            case 'textarea':
-	                $(this).val('');
-	                break;
-	            case 'checkbox':
-	            case 'radio':
-	                this.checked = false;
-	        }
-        });
+				resetForm();
         $('#alert-login').css('display', 'none');
 			});
+
 			$('#btn-register').click(function() {
 				$('#login-content').css('display', 'none');
 				$('#register-content').css('display', 'block');
 				$('#login-header').text('Sign up');
 			});
+
+			$('#btn-forget').click(function() {
+				$('#login-content').css('display', 'none');
+				$('#forget-content').css('display', 'block');
+				$('#login-header').text('Forget Password');
+			});
+
+			$('#forget-form-cancel').click(function() {
+				$('#login-content').css('display', 'block');
+				$('#forget-content').css('display', 'none');
+				$('#login-header').text('Sign in');
+				resetForm();
+			});
+
+			$('#register-form-cancel').click(function() {
+				$('#login-content').css('display', 'block');
+				$('#register-content').css('display', 'none');
+				$('#login-header').text('Sign in');
+				resetForm();
+			});
+
 			$('#login-form-submit').click(function(e) {
 				username = $('#login-username').val();
 				password = $('#login-password').val();
@@ -250,6 +276,10 @@
 	        success: function(response) {
 	        	output = response['output'];
 	        	if (output == 0) {
+	        		$('#alert-login').text("Username or password are wrong.");
+	        		$('#alert-login').css('display', 'block');
+	        	} else if (output == 2) {
+	        		$('#alert-login').text("Account was banned.");
 	        		$('#alert-login').css('display', 'block');
 	        	} else {
 	        		$('#myModal').hide();
@@ -257,7 +287,8 @@
 	        	}
 		      }
 	     	});
-			});	     	
+			});
+
 			$('#btn-logout').click(function(e) {
         $.ajax({
 	        url: "./database/check-logout.php", //the page containing php script
@@ -406,7 +437,6 @@
 					location.href = href;
 					return false;
 				}
-				console.log("through condition.");
 				document.getElementById('register-form').submit();
 			});
 
@@ -455,6 +485,88 @@
         	}
 	     	});
 			});
+
+			$('#forget-email').keyup(function() {
+				email = $('#forget-email').val();
+        $.ajax({
+	        url: "./database/check-email.php", //the page containing php script
+	        dataType: "json",
+	        method: "POST",
+	       	data: {email: email},
+	        success: function(response) {
+	        	status = response['status'];
+	        	if (status == "YES") { // YES is no have username
+	        		$('#forget-has-email').val("false");
+	        		$('#forget-alert-email').css('display', 'none');
+	        	} else {
+	        		$('#forget-has-email').val("true");
+	        		$('#forget-alert-email').css('display', 'block');
+	        	}
+		      },
+		      error: function (xhr, ajaxOptions, thrownError) {
+            console.log(thrownError);
+        	}
+	     	});
+			});
+
+			$('#forget-form-submit').click(function() {
+				email = $('#forget-email').val();
+				hasEmail = $('#forget-has-email').val();
+
+				isWrong = 0;
+				href = "";
+				if (email.length == 0||hasEmail == "true")
+				{
+					$('#forget-text-email').text("*Email");
+					if (href == "") {href="#forget-text-email";}
+					isWrong = 1;
+				} else {
+					hasAdd = false;
+					for (var i = 0; i < email.length; i++) {
+						c = email.charAt(i);
+						if (c == '@') {hasAdd = true;}
+					}
+					if (hasAdd == false) {
+						$('#forget-text-email').text("*Email");
+						if (href == "") {href="#forget-text-email";}
+						isWrong = 1;				
+					} else {
+						$('#forget-text-email').text($('#forget-text-email').text().replace("*",""));
+					}
+				}
+				if (isWrong) {
+					location.href = href;
+					return false;
+				}
+        $.ajax({
+	        url: "./forget-password.php", //the page containing php script
+	        dataType: "json",
+	        method: "POST",
+	       	data: {email: email},
+	        success: function(response) {},
+		      error: function (xhr, ajaxOptions, thrownError) {
+            console.log(thrownError);
+        	}
+	     	});
+				document.getElementById('forget-form').submit();
+			});
+		}
+
+		function resetForm() {
+	    $('#register-form, #login-form, #forget-form').find(':input').each(function() {
+        switch(this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+      });
 		}
 	</script>
 </body>
