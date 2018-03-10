@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <?php require 'header.php'; ?>
@@ -39,6 +38,7 @@
 		$str = '<table class="table table-bordered table-striped table-sm"><thead><th>#</th><th>Username</th><th>Update</th><th>Ban</th></thead><tbody>';
 		for ($i=$begin; $i <= $max && $i <= count($arr); $i++) {
 			$username = $arr[$i-1]['username'];
+			$position = $arr[$i-1]['position'];
 			$str .= '<tr>';
 			$str .= '<td>'.$i.'</td>';
 			$str .= '<td>'.$username.'</td>';
@@ -49,6 +49,7 @@
 			$str .= '</form></td>';
 			$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
 			$str .= '<input type="hidden" name="username" value="'.$username.'">';
+			$str .= '<input type="hidden" name="position" value="'.$position.'">';
 			$str .= '<input type="hidden" name="status" value="ban">';
 			$str .= '<button type="submit" name="submit">Ban</button>';
 			$str .= '</form></td>';
@@ -64,7 +65,17 @@
 	$arr = $db->get_account_all();
 	if (isset($_POST['status'])) {
 		if (!strcmp($_POST['status'], "ban")) {
-			$db->ban_account($_POST['username']);
+			if ($_POST['position'] == "admin") {
+				$count_admin = $db->check_admin_account();
+				if ($count_admin > 1) {
+					$db->ban_account($_POST['username']);
+				} else {
+					echo "<script type='text/javascript'>alert('Can not ban account admin which have 1 account');</script>";
+				}
+			} else {
+				$db->ban_account($_POST['username']);
+			}
+			// $db->ban_account($_POST['username']);
 		} else if (!strcmp($_POST['status'], "update")) {
 			$first_name = $_POST['first_name'];
 			$last_name = $_POST['last_name'];
@@ -74,7 +85,13 @@
 			$position = $_POST['position'];
 			$email = $_POST['email'];
 			$username = $_POST['username'];
+			$oldpassword = $_POST['oldpassword'];
 			$password = $_POST['password'];
+			if ($password == "") {
+				$encrypt = $oldpassword;
+			} else {
+				$encrypt = password_hash($password, PASSWORD_DEFAULT);
+			}
 			$db->update_account_keyword($username, "first_name", $first_name);
 			$db->update_account_keyword($username, "last_name", $last_name);
 			$db->update_account_keyword($username, "nickname", $nickname);
@@ -82,7 +99,7 @@
 			$db->update_account_keyword($username, "gender", $gender);
 			$db->update_account_keyword($username, "position", $position);
 			$db->update_account_keyword($username, "email", $email);
-			$db->update_account_keyword($username, "password", $password);
+			$db->update_account_keyword($username, "password", $encrypt);
 		}
 	}
 	if (isset($_POST['next_page'])) {

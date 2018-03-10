@@ -106,13 +106,14 @@
 						<hr>
 						<h4>Credentials</h4><br>
 						<div class="form-group">
+							<input type="hidden" name="oldpassword" value="<?php echo $password; ?>">
 							<label id="updateuser-text-password">Password</label>
-							<input type="text" class="form-control" id="updateuser-password" name="password" value="<?php echo $password; ?>" required>
+							<input type="text" class="form-control" id="updateuser-password" name="password" required>
 							<label>---Blank, if you don't want to change it.---</label>  
 						</div>
 						<div class="form-group">
 							<label id="updateuser-text-confirmpassword">Confirm Password</label>
-							<input type="text" class="form-control" id="updateuser-confirmpassword" name="password" value="<?php echo $password; ?>" required>
+							<input type="text" class="form-control" id="updateuser-confirmpassword" name="password" required>
 							<label>---Blank, if you don't want to change it.---</label>  
 						</div>
 						<div class="form-group">
@@ -130,7 +131,7 @@
 						<div class="text-center">
 							<input type="hidden" name="username" value="<?php echo $username; ?>">
 							<input type="hidden" name="status" value="update">
-							<a class="btn btn-danger" name="updateuser-form-submit">Change</a>
+							<a class="btn btn-danger" id="updateuser-form-submit" name="updateuser-form-submit">Change</a>
 							<label>or</label>
 							<a href="./manageuser.php" class="btn btn-info">Cancel</a>
 						</div>

@@ -39,7 +39,6 @@ function encryptPassword($loginusername, $loginpassword) {
 	$statement = $conn->prepare('UPDATE account SET password=:password WHERE username=:username' );
 	$statement->execute([':username' => $loginusername, ':password' => $encrypt]); //  set username
 }
-
 ?>
 <body>
 </body>

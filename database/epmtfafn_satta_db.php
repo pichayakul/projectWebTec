@@ -788,6 +788,14 @@ class Database
 	}
 
 
+	public function check_admin_account() {
+		$res = 0;
+		$statement = $this->conn->query('SELECT count(*) as count FROM account WHERE position="admin"');
+		$ret = $statement->fetchAll(PDO::FETCH_ASSOC)[0]['count'];
+		return $ret;
+	}
+
+
 	public function ban_account($username) {
 		$statement = $this->conn->prepare('UPDATE account SET status_ban=1 WHERE username=:username');
 		$statement->execute([':username' => $username]);
