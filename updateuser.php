@@ -31,7 +31,7 @@
 				$female_checked = "";
 			} else {
 				$male_checked = "";
-				$female_checked = "checked";				
+				$female_checked = "checked";
 			}
 			$position = $info['position'];
 			if ($position == "admin") {
@@ -41,7 +41,7 @@
 			} else if ($position == "organizer") {
 				$admin_checked = "";
 				$orga_checked = "checked";
-				$atten_checked = "";				
+				$atten_checked = "";
 			} else {
 				$admin_checked = "";
 				$orga_checked = "";
@@ -54,94 +54,115 @@
 	}
 ?>
 <body>
-	<div class="row content">
-		<div class="col-sm-1" style="background-color:lavender;"></div>
-		<div class="col-sm-10">
-			<div class="row">
-				<div class="col-sm-12 text-center">
-					<br>
-					<h2><?php echo $str_title;?></h2>
-					<hr>
-					<br>
-				</div>
+	<div class="container" style="background-color:white;">
+	<h1><?php echo $str_title ?></h1>
+	<hr>
+<div class="row">
+		<!-- left column -->
+		<div class="col-md-3">
+			<div class="text-center">
+				<img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/matureman1-256.png" class="avatar img-circle" alt="avatar">
+				<h6>Change Photo</h6>
+
+				<input type="file" class="form-control">
 			</div>
-			<div class="row">
-				<div class="col-sm-3"></div>
-				<div class="col-sm-6 profile">
-					<form id="updateuser-form" method="POST" action="./manageuser.php">
-						<h4>Information</h4><br>
-						<div class="form-group">
-							<label id="updateuser-text-firstname">First Name</label>
-							<input type="text" class="form-control" id="updateuser-firstname" name="first_name" value="<?php echo $first_name; ?>" required>
-						</div>
-						<div class="form-group">
-							<label id="updateuser-text-lastname">Last Name</label>
-							<input type="text" class="form-control" id="updateuser-lastname" name="last_name" value="<?php echo $last_name; ?>" required>
-						</div>
-						<div class="form-group">
-							<label id="updateuser-text-nickname">Nickname</label>
-							<input type="text" class="form-control" id="updateuser-nickname" name="nickname" value="<?php echo $nickname; ?>" required>
-						</div>
-						<div class="form-group">
-							<label id="updateuser-text-age">Age</label>
-							<input type="text" class="form-control" id="updateuser-age" name="age" value="<?php echo $age;?>" required>
-						</div>
-						<div class="form-group">
-							<label class="mr-5">Gender</label>
+		</div>
+
+		<!-- edit form column -->
+		<div class="col-md-9 personal-info" >
+
+			<h3>Personal info</h3>
+
+			<form id="updateuser-form" class="form-horizontal" role="form" action="./manageuser.php" method="POST">
+				<div class="form-group">
+					<label id="updateuser-text-firstname"class="col-lg-3 control-label">First name:</label>
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="updateuser-firstname" name="first_name" value="<?php echo $first_name; ?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="updateuser-text-lastname">Last name:</label>
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="updateuser-lastname" name="last_name" value="<?php echo $last_name; ?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="updateuser-text-nickname">Nickname:</label>
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="updateuser-nickname" name="nickname" value="<?php echo $nickname; ?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="updateuser-text-age" >Age: </label>
+					<div class="col-lg-8">
+					<input type="text" class="form-control" id="updateuser-age" name="age" value="<?php echo $age;?>" required>
+					</div>
+
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-3 control-label" >Gender: </label>
+					<div class="col-lg-8">
 							<input type="radio" class="updateuser-gender" name="gender" <?php echo $male_checked; ?> value="m" required>
 							<label class="mr-3">Male</label>
 							<input type="radio" class="updateuser-gender" name="gender" <?php echo $female_checked; ?> value="w" required>
 							<label>Female</label>
-						</div>
-						<br>
-						<hr>
-						<h4>Contacts</h4><br>
-						<div class="form-group">
-							<label id="updateuser-text-email">Email</label>
-							<input type="hidden" id="updateuser-has-email" name="has-email" value="false">
-							<input type="text" class="form-control" id="updateuser-email" name="email" value="<?php echo $email; ?>" required>
-							<label id="updateuser-alert-email" class="noshow">---Email is already used.---</label>   
-						</div>
-						<br>
-						<hr>
-						<h4>Credentials</h4><br>
-						<div class="form-group">
-							<input type="hidden" name="oldpassword" value="<?php echo $password; ?>">
-							<label id="updateuser-text-password">Password</label>
-							<input type="text" class="form-control" id="updateuser-password" name="password" required>
-							<label>---Blank, if you don't want to change it.---</label>  
-						</div>
-						<div class="form-group">
-							<label id="updateuser-text-confirmpassword">Confirm Password</label>
-							<input type="text" class="form-control" id="updateuser-confirmpassword" name="password" required>
-							<label>---Blank, if you don't want to change it.---</label>  
-						</div>
-						<div class="form-group">
-							<label>Position</label>
-							<br>	
-							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $admin_checked; ?> value="admin" required>
-							<label>Adminitrator</label><br>
+
+					</div>
+
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="updateuser-text-email">Email:</label>
+					<div class="col-lg-8">
+						 <input type="hidden" id="updateuser-has-email" name="has-email" value="false">
+						<input class="form-control" type="text" id="updateuser-email" name="email" value="<?php echo $email; ?>" required>
+						<label id="updateuser-alert-email" class="noshow">---Email is already used.---</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="hidden" name="oldpassword" value="<?php echo $password; ?>">
+					<label class="col-lg-3 control-label"id="updateuser-text-password">Password:</label>
+
+					<div class="col-lg-8">
+						<input type="password" class="form-control" id="updateuser-password" name="password" required>
+						<label  >---Blank, if you don't want to change it.---</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" id="updateuser-text-confirmpassword">Confirm Password:</label>
+					<div class="col-md-8">
+						<input type="password" class="form-control" id="updateuser-confirmpassword" name="password" required>
+						<label  >---Blank, if you don't want to change it.---</label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-3 control-label">Position:</label>
+					<div class="col-md-8">
+						  <input type="radio" class="ml-5 mr-2" name="position" <?php echo $admin_checked; ?> value="admin" required>
+							<label >Adminitrator</label><br>
 							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $orga_checked; ?> value="organizer" required>
 							<label>Organizer</label><br>
 							<input type="radio" class="ml-5 mr-2" name="position" <?php echo $atten_checked; ?> value="attendant" required>
 							<label>Attendant</label>
-						</div>
-						<br><br>
-						<hr>
-						<div class="text-center">
-							<input type="hidden" name="username" value="<?php echo $username; ?>">
-							<input type="hidden" name="status" value="update">
-							<a class="btn btn-danger" id="updateuser-form-submit" name="updateuser-form-submit">Change</a>
-							<label>or</label>
-							<a href="./manageuser.php" class="btn btn-info">Cancel</a>
-						</div>
-					</form>
+					</div>
 				</div>
-				<div class="col-sm-3"></div>
-			</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label"></label>
+					<div class="col-md-8">
+						<input type="hidden" name="username" value="<?php echo $username; ?>">
+						<input type="hidden" name="status" value="update">
+    				<a class="btn btn-primary" id="updateuser-form-submit"  name="updateuser-form-submit">Save Change</a>
+    				<a class="btn btn-danger"  href="./manageuser.php">Cancel</a>
+					</div>
+				</div>
+			</form>
 		</div>
-		<div class="col-sm-1" style="background-color:lavender;"></div>
-	</div>
+</div>
+</div>
+
+
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -223,7 +244,7 @@
 					if (hasAdd == false) {
 						$('#updateuser-text-email').text("*Email");
 						if (href == "") {href="#updateuser-text-email";}
-						isWrong = 1;				
+						isWrong = 1;
 					} else {
 						$('#updateuser-text-email').text($('#updateuser-text-email').text().replace("*",""));
 					}
@@ -234,6 +255,7 @@
 					return false;
 				}
 				document.getElementById('updateuser-form').submit();
+
 			});
 
 			$('#updateuser-email').keyup(function() {

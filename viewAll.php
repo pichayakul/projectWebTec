@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <?php include "epmtfafn_satta_db.php" ;?>
+    <?php include "database/epmtfafn_satta_db.php" ;?>
     <script src="js/jquery-3.3.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -54,6 +54,8 @@ function showPage() {
     $type = '';
     $eventAll = $db->get_event_available_all() ;
     $seminarAll =$db->get_seminar_available_all();
+
+
     function DateEng($strDate){
       $strYear = date("Y",strtotime($strDate));
       $strMonth= date("n",strtotime($strDate));
@@ -69,7 +71,7 @@ function showPage() {
     {
       $round=0;
       $event = '';
-
+      $count = 0;
 
         while ($round<count($data)){
           $name = $data[count($data)-1-$round]["name"];
@@ -87,12 +89,12 @@ function showPage() {
           if(strpos($name,$text) !== false || strpos($location,$text) !==false || strpos($username,$text) !==false){
 
             $contents = '<div class="col-sm-6 col-md-4 animate-bottom">
-                    <div class="event-container">
+                    <div class="event-container style = "box-shadow:0 0 3px;">
 
                     <a href = "./eventMain.php?noevent='.$noevent.'&username='.$username.'">
-                    <div class="thumbnail" >
+                    <div class="thumbnail" style="background-color:white;">
                         <div class="event-image" >
-                            <img src='.$imagePath.'  >
+                            <img src="'.$imagePath.'">
                         </div>
                         <div class="caption">
                             <div class="text-ellipsis">
@@ -115,16 +117,15 @@ function showPage() {
             </div>';
 
               $event = $event.$contents;
+              $count = $count+1;
 
 
 
           }
 
-
-
             $round++;
     }
-    return $event;
+    return  array($event,$count);
   }
     function showContents($data){
 
@@ -146,12 +147,12 @@ function showPage() {
           $endae = DateEng($end_date);
 
           $contents = '<div class="col-sm-6 col-md-4 animate-bottom">
-                  <div class="event-container"  style = "box-shadow:0 0 5px;">
+                  <div class="event-container"  style = "box-shadow:0 0 3px;">
 
                   <a href = "./eventMain.php?noevent='.$noevent.'&username='.$username.'">
-                  <div class="thumbnail" >
+                  <div class="thumbnail" style="background-color:white;">
                       <div class="event-image" >
-                          <img src='.$imagePath.'  >
+                          <img src="'.$imagePath.'"">
                       </div>
                       <div class="caption">
                           <div class="text-ellipsis">
@@ -197,11 +198,26 @@ function showPage() {
             # code...
           }
           elseif ($_POST["type"]=="search") {
-                $max = count($eventAll) + count($seminarAll);
-                $type = "Result";
-                $events_aliv = show_arive($eventAll,$_POST["search"]);
-                $seminar_aliv  = show_arive($seminarAll,$_POST["search"]);
-                $events = $events_aliv.$seminar_aliv;
+                  $type = "";
+                 if($_POST["search"]!=""){
+                   $text = $_POST["search"];
+                   $max = count($eventAll) + count($seminarAll);
+                   $events_aliv = show_arive($eventAll,$_POST["search"]);
+                   $seminar_aliv  = show_arive($seminarAll,$_POST["search"]);
+                   $num = $events_aliv[1]+$seminar_aliv[1];
+                   $events = $events_aliv[0].$seminar_aliv[0];
+                   $type = " $num result for  '$text' ";
+                 }
+                 else{
+                      $num = count($eventAll)+count($seminarAll);
+                      $findevent = showContents($eventAll);
+                      $findseminars = showContents($seminarAll);
+                      $events = $findevent.$findseminars;
+                      $type = " $num result for ' ' ";
+
+
+
+                 }
 
             # code...
           }
@@ -211,10 +227,13 @@ function showPage() {
 
       ?>
       <div class="wrapper animate-bottom" id="satta">
+        <?php require './header.php';  ?>
+
 
      <div class="satta-event">
        <div class="container">
-
+              <br>
+              <br>
               <h1><?php echo $type ?></h1>
 
 
@@ -226,7 +245,12 @@ function showPage() {
        <div class="container">
          <div class="category-container">
             <div class="row">
-              <?php echo $events ?>
+              <?php
+
+                echo $events;
+
+
+              ?>
 
             </div>
 

@@ -49,18 +49,16 @@
 			}
 		}
 	}
-	$db->closeDatabase(); 
+	$db->closeDatabase();
 ?>
 <body>
 	<div class="row content">
-		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-2" ></div>
 		<div class="col-sm-8">
 			<div class="row">
 				<div class="col-sm-12 clearfix">
 					<br>
-					<a class="btn btn-primary btn-sm float-right" href="./manageuser.php">Management User</a>
-					<a class="btn btn-primary btn-sm float-right" href="./viewlog.php">Log</a>
-					<a class="btn btn-primary btn-sm float-right" href="./eventreport.php">Report</a>
+
 					<br>
 					<hr>
 				</div>
@@ -74,6 +72,9 @@
 				</div>
 			</div>
 			<div class="row">
+				<a class="btn btn-primary btn-sm float-right" href="./manageuser.php">Management User</a>
+				<a class="btn btn-primary btn-sm float-right" href="./viewlog.php">Log</a>
+				<a class="btn btn-primary btn-sm float-right" href="./eventreport.php">Report</a>
 				<h4>website</h4>
 				<table class="table table-bordered table-striped">
 					<tbody>
@@ -135,7 +136,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-2"></div>
 	</div>
 </body>
 </html>

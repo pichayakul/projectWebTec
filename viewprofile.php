@@ -11,75 +11,101 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <?php require 'header.php'; ?>
-<body>
-	<div class="row content">
-		<div class="col-sm-2" style="background-color:lavender;"></div>
-		<div class="col-sm-8">
-			<div class="row">
-				<div class="col-sm-12 text-center">
-					<br>
-					<h2>Profile</h2>
-					<hr>
-					<br>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-3"></div>
-				<div class="col-sm-6 profile">
-					<form id="profile-form" method="POST" action="./index.php">
-						<h4>Information</h4><br>
-						<div class="form-group">
-							<label id="profile-text-firstname">First Name</label>
-							<input type="text" class="form-control" id="profile-firstname" name="first_name" value="<?php echo $_SESSION['first_name']; ?>" required>
-						</div>
-						<div class="form-group">
-							<label id="profile-text-lastname">Last Name</label>
-							<input type="text" class="form-control" id="profile-lastname" name="last_name" value="<?php echo $_SESSION['last_name']; ?>" required>
-						</div>
-						<div class="form-group">
-							<label id="profile-text-nickname">Nickname</label>
-							<input type="text" class="form-control" id="profile-nickname" name="nickname" value="<?php echo $_SESSION['nickname']; ?>" required>
-						</div>
-						<label>Gender <?php switch ($_SESSION['gender']){case 'm':echo "Male";break; case 'w':echo "Female";break;} ?></label>
-						<br>
-						<label>Age <?php echo $_SESSION['age']; ?></label>
-						<hr>
-						<h4>Contacts</h4><br>
-						<div class="form-group">
-							<label id="profile-text-email">Email</label>
-							<input type="hidden" id="profile-has-email" name="has-email" value="false">
-							<input type="text" class="form-control" id="profile-email" name="email" value="<?php echo $_SESSION['email']; ?>" required>
-							<label id="profile-alert-email" class="noshow">---Email is already used.---</label>    
-						</div>
-						<br>
-						<hr>
-						<h4>Credentials</h4><br>
-	      		<div class="form-group">
-		      		<label id="profile-text-password">New Password</label>
-		      		<input type="password" class="form-control" id="profile-password" name="password" required>
-		      		<label id="profile-alert-email" >---Blank, if you don't want to change it.---</label>   		
-	      		</div>
-	      		<div class="form-group">
-		      		<label id="profile-text-confirmpassword">New Confirm Password</label>
-		      		<input type="password" class="form-control" id="profile-confirmpassword" name="confirm-password" required>
-		      		<label id="profile-alert-email" >---Blank, if you don't want to change it.---</label>   	
-	      		</div>
-						<br><br>
-						<hr>
-						<div class="text-center">
-							<input type="hidden" name="status" value="viewprofile">
-							<a id="profile-form-submit" class="btn btn-danger">Save</a>
-							<label>or</label>
-							<a class="btn btn-light" id="profile-form-submit" href="./index.php">Cancel</a>
-							<br><br><br><br>
-						</div>
-					</form>
-				</div>
-				<div class="col-sm-3"></div>
+<body >
+	<div class="container" style="background-color:white;">
+	<h1>Profile</h1>
+	<hr>
+<div class="row">
+		<!-- left column -->
+		<div class="col-md-3">
+			<div class="text-center">
+				<img src="<?php echo $_SESSION['image'];?>" class="avatar img-circle" alt="avatar" style="width: 80%;">
+				<h6>Change Photo</h6>
+
+				<input type="file" class="form-control">
 			</div>
 		</div>
-		<div class="col-sm-2" style="background-color:lavender;"></div>
-	</div>
+
+		<!-- edit form column -->
+		<div class="col-md-9 personal-info" >
+
+			<h3>Personal info</h3>
+
+			<form id="profile-form" class="form-horizontal" role="form" action="./index.php" method="POST">
+				<div class="form-group">
+					<label id="profile-text-firstname"class="col-lg-3 control-label">First name:</label>
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="profile-firstname" name="first_name" value="<?php echo $_SESSION['first_name']; ?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="profile-text-lastname">Last name:</label>
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="profile-lastname" name="last_name" value="<?php echo $_SESSION['last_name']; ?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="profile-text-nickname">Nickname:</label>
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="profile-nickname" name="nickname" value="<?php echo $_SESSION['nickname']; ?>" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" >Gender: </label>
+					<div class="col-lg-8">
+						<label class="control-label"><?php switch ($_SESSION['gender']){case 'm':echo "Male";break; case 'w':echo "Female";break;} ?></label>
+
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label" >Age: </label>
+					<div class="col-lg-8">
+						<label class="control-label" style="float:left;"><?php echo $_SESSION['age']; ?></label>
+					</div>
+
+				</div>
+
+				<div class="form-group">
+					<label class="col-lg-3 control-label" id="profile-text-email">Email:</label>
+					 <input type="hidden" id="profile-has-email" name="has-email" value="false">
+					<div class="col-lg-8">
+						<input class="form-control" type="text" id="profile-email" name="email" value="<?php echo $_SESSION['email']; ?>" required>
+						<label id="profile-alert-email" class="noshow">---Email is already used.---</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label"id="profile-text-password">New Password:</label>
+					<div class="col-lg-8">
+						<input type="password" class="form-control" id="profile-password" name="password" required>
+						<label id="profile-alert-email" >---Blank, if you don't want to change it.---</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" id="profile-text-confirmpassword">Confirm Password</label>
+					<div class="col-md-8">
+						<input type="password" class="form-control" id="profile-confirmpassword" name="confirm-password" required>
+						<label id="profile-alert-email" >---Blank, if you don't want to change it.---</label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-3 control-label"></label>
+					<div class="col-md-8">
+						<input type="hidden" name="status" value="viewprofile">
+    				<a id="profile-form-submit" class="btn btn-primary">Save Change</a>
+    				<a class="btn btn-danger" id="profile-form-submit" href="./index.php">Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+</div>
+</div>
+
+
+
+
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script>
@@ -159,7 +185,7 @@
 					if (hasAdd == false) {
 						$('#profile-text-email').text("*Email");
 						if (href == "") {href="#profile-text-email";}
-						isWrong = 1;				
+						isWrong = 1;
 					} else {
 						$('#profile-text-email').text($('#profile-text-email').text().replace("*",""));
 					}

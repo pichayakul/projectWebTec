@@ -6,9 +6,9 @@
     <?php include "database/epmtfafn_satta_db.php" ;?>
     <!-- <script src="js/jquery-3.3.1.min.js"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
     <!-- <link href="./css/bootstrap.min.css" rel="stylesheet"> -->
 
 
@@ -16,7 +16,6 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Mitr|Nanum+Gothic|Noto+Serif|Ubuntu" rel="stylesheet">
   </head>
-<?php require './header.php';  ?>
   <body onload="myFunction()" style="margin:0;" id ="event-body">
     <div id="min-loader">
   <div class="holder">
@@ -45,6 +44,7 @@ function showPage() {
   document.getElementById("event-body").style.background="whitesmoke";
 }
 </script>
+
 
 
     <?php
@@ -102,13 +102,14 @@ function showPage() {
 
 
 
+
             $contents = '<div class="col-sm-6 col-md-4" >
-                            <div class="event-container animate-bottom " style = "box-shadow:0 0 5px;" >
+                            <div class="event-container animate-bottom " style = "box-shadow:0 0 3px;" >
 
                               <a href = "./eventMain.php?noevent='.$noevent.'&username='.$username.'" >
-                                <div class="thumbnail" >
+                                <div class="thumbnail" style="background-color:white;">
                                   <div class="event-image" >
-                                    <img src='.$imagePath.'  >
+                                    <img src="'.$imagePath.'"  >
                                   </div>
                                   <div class="caption">
                                     <div class="text-ellipsis">
@@ -148,6 +149,7 @@ function showPage() {
 
     ?>
   <div class="animate-bottom" id="satta"  >
+    <?php require './header.php';  ?>
 
 
 
@@ -159,31 +161,30 @@ function showPage() {
       <div class="container ">
 
         <span style="font-size:40px; font-weight:bold; color:white; margin-left:25px;">Recommend</span>
-        <button type="button" class="btn btn-info btn-lg float-right" data-toggle="modal" data-target="#myModal" style="float:right">
-          <span class="glyphicon glyphicon-search"></span> Search
-
-        </button>
 
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
            <?php
            $maxArray = count($eventsSort);
-           $maxcount =  intval(count($eventsSort)/3);
+           $maxcount =  ceil(count($eventsSort)/3);
            $arrayCount=0;
            $maxcountFor=0;
+
            if ($maxcount>3){
              $maxcount=3;
            }
+
            $contents =  '';
            $contentsSrc = '';
+
            while ($maxcountFor<$maxcount) {
 
              if($maxcountFor==0){
-               $contents.='<li data-target="#myCarousel" data-slide-to ="'.$maxcountFor.'" class = "active"></li>';
+               $contents.='<li data-target="#myCarousel" data-slide-to ="'.$maxcountFor.'" class = "active" ></li>';
                $f = '<div class = "item active">';
              }
              else {
-               $contents.='<li data-target="#myCarousel" data-slide-to ="'.$maxcountFor.'"></li>';
+               $contents.='<li data-target="#myCarousel" data-slide-to ="'.$maxcountFor.'" ></li>';
                $f = '<div class = "item">';
 
 
@@ -204,10 +205,10 @@ function showPage() {
                $sdate = DateEng($date_time);
                $endae = DateEng($end_date);
 
-               $detail .= '<div class="col-sm-6 col-md-4 animate-bottom" style = "margin-top:25px;">
+               $detail .= '<div class="col-sm-6 col-md-4 " style = "margin-top:25px;">
                                <div class="event-container">
                                  <a href = "./eventMain.php?noevent='.$eventsSort[$arrayCount]["noevent"].'&username='.$eventsSort[$arrayCount]["username"].'">
-                                   <div class="thumbnail" >
+                                   <div class="thumbnail" style="background-color:white;">
                                      <div class="event-image" >
                                        <img src="'.$imagePath.'">
                                      </div>

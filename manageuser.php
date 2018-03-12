@@ -19,7 +19,7 @@
 	function pageToString($number, $arr) {
 		$capacity = 5;
 		$begin = 1;
-		$max = ($number*$capacity); 
+		$max = ($number*$capacity);
 		if ($number > 1) {
 			$begin = (($number-1)*$capacity)+1;
 		}
@@ -45,13 +45,13 @@
 			$str .= '<td><form method="POST" action="./updateuser.php">';
 			$str .= '<input type="hidden" name="username" value="'.$username.'">';
 			$str .= '<input type="hidden" name="status" value="update">';
-			$str .= '<button type="submit" name="submit">Update</button>';
+			$str .= '<button type="submit" class ="btn btn-success" name="submit">Update</button>';
 			$str .= '</form></td>';
 			$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
 			$str .= '<input type="hidden" name="username" value="'.$username.'">';
 			$str .= '<input type="hidden" name="position" value="'.$position.'">';
 			$str .= '<input type="hidden" name="status" value="ban">';
-			$str .= '<button type="submit" name="submit">Ban</button>';
+			$str .= '<button type="submit"  class="btn btn-danger" name="submit">Ban</button>';
 			$str .= '</form></td>';
 			$str .= '</tr>';
 		}
@@ -122,12 +122,12 @@
 				$str .= '<td><form method="POST" action="./updateuser.php">';
 				$str .= '<input type="hidden" name="username" value="'.$username.'">';
 				$str .= '<input type="hidden" name="status" value="update">';
-				$str .= '<button type="submit" name="submit">Update</button>';
+				$str .= '<button type="submit" class="btn btn-success" name="submit">Update</button>';
 				$str .= '</form></td>';
 				$str .= '<td><form method="POST" action="" onsubmit="return confirm(\'Do you want ban username: `'.$username.'` from website?\')">';
 				$str .= '<input type="hidden" name="username" value="'.$username.'">';
 				$str .= '<input type="hidden" name="status" value="ban">';
-				$str .= '<button type="submit" name="submit">Ban</button>';
+				$str .= '<button type="submit" class = "btn btn-danger" name="submit">Ban</button>';
 				$str .= '</form></td>';
 				$str .= '</tr>';
 				$str .= "</tbody></table>";
@@ -141,12 +141,11 @@
 ?>
 <body>
 	<div class="row content">
-		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-2" ></div>
 		<div class="col-sm-8">
 			<div class="row">
 				<div class="col-sm-12 clearfix">
 					<br>
-					<a class="btn btn-primary btn-sm float-left" href="./management.php">< Back</a>
 					<br>
 					<hr>
 				</div>
@@ -161,48 +160,49 @@
 				</div>
 			</div>
 			<div class="row">
+				<a class="btn btn-primary btn-sm float-right" href="./management.php">< Back</a>
+				<br><br><br>
 				<div class="col-sm-3"></div>
 				<div class="col-sm-6 text-center">
 					<form id="search-user-form" class="form-inline" method="POST" action="">
 				    <div class="form-group">
-				      <label for="username">Username: </label>
+
 				      <input type="text" class="form-control" placeholder="Enter Username" name="username" require>
 				      <input type="hidden" name="search-username" value="1">
-				      <input type="submit" name="submit" value="Search">
+				      <input type="submit"  class ="btn btn-info"name="submit" value="Search">
 				    </div>
 					</form>
-					<br><br>
+
 				</div>
 				<div class="col-sm-3"></div>
-			</div>
-			<div class="row">
-				<div class="col-sm-2"></div>
-				<div class="col-sm-8">
-					<?php echo $str_search;?>
-					<br>
-					<hr>
-					<br>
-				</div>
-				<div class="col-sm-2"></div>
-			</div>
-			<div class="row">
-				<div class="col-sm-2 h-25 mt-auto mb-auto">
-					<form id="previous-page-form" method="POST" >
-						<input type="hidden" name="next_page" value="<?php echo $previous_page;?>">
-						<a class="btn btn-primary btn-sm float-right <?php echo $is_show_previous;?>" onclick="document.getElementById('previous-page-form').submit();">Previous</a>
+				<br>
+				<br>
+				<hr>
+				<br>
+
+
+				<?php echo $str_search;?>
+				<br>
+				<h5>All username (5 users per page)</h5>
+				<?php  echo $str_table;?>
+				<div class="col-sm-1"  >
+					<form id="previous-page-form" method="POST"  >
+						<input type="hidden"  name="next_page" value="<?php echo $previous_page;?>">
+						<a class="btn btn-primary btn-sm  <?php echo $is_show_previous;?>" onclick="document.getElementById('previous-page-form').submit();"style="margin-left:-15px;" >Previous</a>
 					</form>
 				</div>
-				<div class="col-sm-8">
-					<h5>All username (5 users per page)</h5>
-					<?php  echo $str_table;?>
-				</div>
-				<div class="col-sm-2 h-25 mt-auto mb-auto">
-					<form id="next-page-form" method="POST">
-						<input type="hidden" name="next_page" value="<?php echo $next_page;?>">
-						<a class="btn btn-primary btn-sm <?php echo $is_show_next;?>" onclick="document.getElementById('next-page-form').submit();">Next</a>
+				<div class="col-sm-10"></div>
+
+				<div class="col-sm-1">
+					<form id="next-page-form" method="POST" >
+						<input type="hidden" name="next_page" value="<?php echo $next_page;?>" >
+						<a class="btn btn-primary btn-sm <?php echo $is_show_next;?>" onclick="document.getElementById('next-page-form').submit();" style="margin-left:-15px;"  >Next</a>
 					</form>
+
 				</div>
 			</div>
+
+
 			<div class="row">
 				<div class="col-sm-12 clearfix">
 					<br>
@@ -211,7 +211,18 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-2" ></div>
 	</div>
+	<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
 </body>
 </html>
