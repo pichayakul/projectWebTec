@@ -41,13 +41,14 @@ $db->openDataBase();
 $n=5;
 $data=$db->get_comment_notopic_all($_GET['v']);
 $dataTopic=$db->get_topic($_GET['v']);
+$currenceName =$db->get_noevent($_GET['noevent']);
 if (isset($_SESSION["username"])){
   $permission=$db->infoUsername($_SESSION['username']);
   if ($permission['position']=="admin" || $currenceName['username'] == $_SESSION['username']){
       $n=6;
   }
 }
-$currenceName =$db->get_noevent($_GET['noevent']);
+
 
 
 // echo "<pre>";
