@@ -1,0 +1,64 @@
+
+body {
+    background-color:rgb(230, 42, 42);
+    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Noto Serif', serif;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-family: 'Libre Baskerville', serif;
+    font-family: 'Mitr', sans-serif;    
+}
+
+
+h1{
+  color:red;
+  margin-top: 130px;
+margin-left: 250px;
+}
+/* 
+#aas{
+  color: red;
+  background-color:rgb(230, 42, 42);
+
+}
+#slideright{
+position: fixed;
+  top:20%;
+  left: 110%;
+  margin-left: -300px;
+}
+#test{
+    color: red;
+    background-color:rgb(230, 42, 42);
+
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0 5px;
+    color: red;
+  }
+  
+  thead th {
+    background-color: #006DCC;
+    color: white;
+  }
+  
+  tbody td {
+    background-color: #EEEEEE;
+  } */
+  
+  /* tr td:first-child,
+  tr th:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  
+  tr td:last-child,
+  tr th:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  } */
+
+
+
+

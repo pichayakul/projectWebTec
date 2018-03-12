@@ -12,15 +12,19 @@ function hasUsername($loginusername) {
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 	$conn->exec("set names utf8");
 	// $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$statement = $conn->prepare('SELECT * FROM account WHERE username=:username' );
+	$statement = $conn->prepare('SELECT * FROM account WHERE username=:username AND status_email=1' );
 	$statement->execute([':username' => $loginusername]); //  set username
 	$result = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
 	// $conn = null;
 	// return $result;
 	if (count($result)==1) { //  Have username in Account table
-		return true;
-	} else { //  Don't have username in Account table
-		return false;
+		if ($result[0]['status_ban'] == 0) {
+			return 1;
+		} else {
+			return 2;
+		}
+	} else {
+		return 0;
 	}
 }
 
@@ -49,15 +53,20 @@ $password = $_POST['password'];
 $output = 0;
 $arroutput = array();
 $arroutput['output'] = $output;
-if (hasUsername($username)) {
-	$respass = getPassword($username);
-	$res = strcmp($password, $respass);
-	if ($res == 0) {
-		$output = 1;
+$key = hasUsername($username);
+if ($key == 1 || $key == 2) {
+	if ($key == 2) {
+		$output = 2;
+	} else {
+		$encrypt = getPassword($username);
+		if (password_verify($password, $encrypt)) {
+			$output = 1;
+		}
 	}
 }
 
 $arroutput['output'] = $output;
 // print_r($output);
 echo json_encode($arroutput);
+
 ?>
