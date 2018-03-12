@@ -480,7 +480,7 @@ class Database
 	public function update_event($noevent,$username,$name,$type,$current,$capacity,$price,
 	$image_path,$vdo_path,$description,$create_date_time,
 	$start_date_time,$end_date_time,$location,$pre_condition,$lat,$lon,$link) {
-	$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:pre_condition,lat=:lat,lon=:lon,link=:link WHERE noevent=:noevent' );
+	$statement = $this->conn->prepare('UPDATE event SET username=:username,name=:name,type=:type,current=:current,capacity=:capacity,price=:price,imagePath=:image_path,vdoPath=:vdo_path,description=:description,create_date_time=:create_date_time,start_date_time=:start_date_time,end_date_time=:end_date_time,location=:location,pre_condition=:pre_condition,lat=:lat,lon=:lon,formPath=:link WHERE noevent=:noevent' );
 	$statement->execute([':noevent' => $noevent,
 	':username' => $username,
 	':name' => $name,
