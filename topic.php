@@ -81,7 +81,6 @@ $db->closeDataBase();
 
 <form method="get" action='nut.php'>
     <button class="btn btn-primary" type="submit">Back To Webboard</button>
-    <input type="hidden" name="username" value='<?php echo $_SESSION['username'];?>' />
     <input type="hidden" name="noevent" value='<?php echo $_GET['noevent'];?>' />
 </form>
 
