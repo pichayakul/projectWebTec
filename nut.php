@@ -32,6 +32,7 @@ $db->openDataBase();
 
 $nut = $_GET['noevent'];
 $n=5;
+$currenceName =$db->get_noevent($_GET['noevent']);
 if (isset($_SESSION["username"])){
     $sun = $_SESSION['username'];
     $permission=$db->infoUsername($_SESSION['username']);
@@ -46,7 +47,7 @@ else{
 // echo "<pre>";
 // print_r($db->get_topic_noevent_all(1));
 
-$currenceName =$db->get_noevent($_GET['noevent']);
+
 
 
 // print_r($currenceName['username']);
