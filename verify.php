@@ -3,6 +3,8 @@
 <head>
 	<title>Verify</title>
 	<meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <?php require './header.php';?>
 <?php
@@ -34,11 +36,12 @@ function create_account($username,$password,$nickname,$position,$first_name,$las
   $serverpassword = "";
   $dbname = "epmtfafn_satta";
 
+  $encrypt = password_hash($password, PASSWORD_DEFAULT);
   $conn = new PDO("mysql:host=$servername;dbname=$dbname", $serverusername, $serverpassword);
   $conn->exec("set names utf8");
   $statement = $conn->prepare('INSERT INTO account (username,password,nickname,position,first_name,last_name,gender,age,email,image,start_date_time,status_email,status_ban) VALUES (:username,:password,:nickname,:position,:first_name,:last_name,:gender,:age,:email,:image,:start_date_time,0,0);' );
   $statement->execute([':username' => $username,
-                      ':password' => $password,
+                      ':password' => $encrypt,
                       ':nickname' => $nickname,
                       ':position' => $position,
                       ':first_name' => $first_name,
@@ -57,7 +60,7 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
   create_account($username,$password,$nickname,$position,$firstname,$lastname,$gender,$age,$email,$image_path,$start_date_time);
   $msg = "Please, click link below for verify your account.<br>After verified account, you can sign in and enjoy it.<br><br>";
   $msg = wordwrap($msg,70);
-  $msg .= '<a href="http://localhost/projectWebTec/active-account.php?username='.$username.'&">Click Verify Here.</a><br><br>';
+  $msg .= '<a href="http://localhost/testlast/active-account.php?username='.$username.'&">Click Verify Here.</a><br><br>';
   $msg .= 'Thank you for join to us.<br>We hope you enjoy the activities and seminars.<br><br>';
   $msg .= 'Admin M.Suphawich';
   $strHeader = "From: suphawichtsd@gmail.com";
