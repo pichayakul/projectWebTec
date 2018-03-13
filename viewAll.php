@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="css/showAll.css">
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Mitr|Nanum+Gothic|Noto+Serif|Ubuntu" rel="stylesheet">
   </head>
-  <body onload="myFunction()" style="margin:0;" id ="event-body">
+  <body onload="myFunction()" style="margin:0; font-family: 'Libre Baskerville', serif;
+font-family: 'Mitr', sans-serif;"" id ="event-body">
     <div id="min-loader">
   <div class="holder">
     <div class="box"></div>
@@ -85,8 +86,9 @@ function showPage() {
           $username =  $data[$round]["username"];
           $sdate = DateEng($date_time);
           $endae = DateEng($end_date);
+          $type = $data[$round]["type"];
 
-          if(strpos($name,$text) !== false || strpos($location,$text) !==false || strpos($username,$text) !==false){
+          if(strpos($name,$text) !== false || strpos($location,$text) !==false || strpos($username,$text) !==false || strpos($type,$text)!==false){
 
             $contents = '<div class="col-sm-6 col-md-4 animate-bottom">
                     <div class="event-container style = "box-shadow:0 0 3px;">

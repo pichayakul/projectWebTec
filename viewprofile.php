@@ -14,7 +14,7 @@
 <body >
 	<div class="container" style="background-color:white;">
 	<h1>Profile</h1>
-	<hr>
+	<hr style="height:5px;  background-color:#FF6666	;">
 <div class="row">
 		<!-- left column -->
 		<div class="col-md-3">
@@ -22,10 +22,9 @@
 				<img src="<?php echo $_SESSION['image'];?>" class="avatar img-circle" alt="avatar" style="width: 80%;">
 				<h6>Change Photo</h6>
 
-				<input type="file" class="form-control">
+				<input type="file" name="imageUp" class="form-control">
 			</div>
 		</div>
-
 		<!-- edit form column -->
 		<div class="col-md-9 personal-info" >
 

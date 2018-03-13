@@ -100,7 +100,8 @@ $db->closeDataBase();
 </form>
 
 <table border="-1">
-<tr id="TopicHeader">
+<tr id="TopicHeader" style="background-color: #397be6;
+  -webkit-text-fill-color: aliceblue;">
 <th width="85" > <div  align="center">No.</div></th>
 <th width="480"> <div  align="center">Question </div></th>
 <th width="100"> <div align="center">Name</div></th>
@@ -168,7 +169,7 @@ if ($n==6){
 <div class="modal-content" style="width:420px">
 
 <div class="modal-header" >
-<h4 class="modal-title">Question</h4>
+<h4 class="modal-title">Topic</h4>
 <button type="button" class="close" data-dismiss="modal">&times;</button>
 </div>
     <form  method="post" >

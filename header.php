@@ -36,7 +36,6 @@
 
 	if (isset($_POST['status'])) {
 		if ($_POST['status'] == "viewprofile") {
-			require './database/epmtfafn_satta_db.php';
 			$db = new Database();
 			$db->openDatabase();
 			$image_path = $_SESSION['image'];
@@ -143,7 +142,11 @@
 	      </div>
 	      <div class="modal-body  clearfix ml-4 mr-4 noshow" id="forget-content">
 	      	<br>
-	      	<form id="forget-form" method="post" action="">
+	      	<form id="forget-form" method="post" action="./forget-password.php">
+						<div class="form-group">
+							<label>Username</label>
+							<input type="text" name="username" class="form-control" required>
+						</div>
 	      		<div class="form-group">
 	      			<label class="float-left" id="forget-text-email">Email</label>
 	      			<input type="hidden" id="forget-has-email" name="has-email" value="false">
@@ -151,7 +154,7 @@
 	      		</div>
 	      		<label id="alert-login" class="noshow" style="color:red;">username or password are wrong.</label>
 	      		<br>
-	      		<a class="btn btn-success" name="submit-forget" id="forget-form-submit" value="Enter">Enter</a>
+						<a class="btn btn-success" name="submit-forget" id="forget-form-submit" value="Enter">Enter</a>
 	      		<a class="btn btn-danger" id="forget-form-cancel" style="margin-left:10px;">Cancel</a>
 	      	</form>
 	      </div>
@@ -557,16 +560,12 @@
 					location.href = href;
 					return false;
 				}
-        $.ajax({
-	        url: "./forget-password.php", //the page containing php script
-	        dataType: "json",
-	        method: "POST",
-	       	data: {email: email},
-	        success: function(response) {},
-		      error: function (xhr, ajaxOptions, thrownError) {
-            console.log(thrownError);
-        	}
-	     	});
+        // $.post("./forget-password.php",
+				// {
+	      //  	email: email
+				// }, function(response) {
+				// 		console.log('INTO');
+				// });
 				document.getElementById('forget-form').submit();
 			});
 		}

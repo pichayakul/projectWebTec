@@ -104,7 +104,7 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
 
 <body>
   <div class="row content">
-    <div class="col-sm-2" style="background-color:lavender;"></div>
+    <div class="col-sm-2"></div>
     <div class="col-sm-8">
       <div id="verify-content" class="alert-verify text-center">
         <br>
@@ -121,7 +121,7 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], "./images/avatar/".$_FILES["
         <label>Thank you for registration. Have a enjoy with us.</label>
       </div>
     </div>
-    <div class="col-sm-2" style="background-color:lavender;"></div>
+    <div class="col-sm-2" ></div>
   </div>
 </body>
 </html>

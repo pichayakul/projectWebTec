@@ -56,7 +56,7 @@
 <body>
 	<div class="container" style="background-color:white;">
 	<h1><?php echo $str_title ?></h1>
-	<hr>
+ <hr style="height:5px;  background-color:#FF6666	;">
 <div class="row">
 		<!-- left column -->
 		<div class="col-md-3">

@@ -3,14 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <?php include "database/epmtfafn_satta_db.php" ;?>
+    <?php
+    include "database/epmtfafn_satta_db.php" ;
+    ?>
     <?php include "./upload.php" ;?>
 
     <!-- <script src="js/jquery-3.3.1.min.js"></script> -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- <link href="./css/bootstrap.min.css" rel="stylesheet"> -->
 
 
@@ -18,8 +20,11 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Mitr|Nanum+Gothic|Noto+Serif|Ubuntu" rel="stylesheet">
   </head>
-  <body onload="myFunction()" style="margin:0;" id ="event-body">
-        <div id="headerID" style="background-color: white; box-shadow:0 0 10px;">
+
+  <body style="margin:0;overflow-x: hidden; font-family: 'Libre Baskerville', serif;
+font-family: 'Mitr', sans-serif;" id ="event-body">
+
+        <div id="headerID" style="background-color: white; box-shadow:0 0 10px; width:100$">
             <?php require './header.php';  ?>
 
         </div>
@@ -40,10 +45,17 @@
 
 <script>
 var myVar;
-
-function myFunction() {
-    myVar = setTimeout(showPage, 1500);
-}
+  $(document).ready(function(){
+      myFunction();
+      // if ($("#noeventCreate").val()=="")
+      // {
+      //   window.location="eventMain.php?noevent="+$('#noeventCreate').val();
+      //   header("Location: eventMain.php?noevent="+$('#noeventCreate').val());
+      // }
+  });
+  function myFunction() {
+      myVar = setTimeout(showPage, 1500);
+  }
 
 function showPage() {
   document.getElementById("min-loader").style.display = "none";
@@ -54,7 +66,13 @@ function showPage() {
 </script>
 <?php
 $db = new Database();
+$a="";
 $db->openDatabase();
+        echo var_dump($_FILES);
+        echo var_dump($_POST);
+        if ($_FILES["imageUp"]["name"]!=""){
+          $db->update_image_account($_SESSION["username"],$_FILES["imageUp"]["name"]);
+        }
         if (isset($_POST["btnCreate"])){
 
           // echo "aaaaaaaaaaaaaaa";
@@ -78,12 +96,9 @@ $db->openDatabase();
             $db->create_event($username,$_POST["title"],$_POST["T_Event"],0,intval($_POST["capacity"]),intval($_POST["price"]),
             $fi,'images/events/'.$_POST["title"].'/organizerUpload'.'/'.$_FILES['vdoUpload']["name"],$_POST["description"],date('Y-m-d h:i:s'),
             $start,$end,$_POST["location"],$_POST["precondition"],0,0,$_POST["lat"],$_POST["lon"],$linkForm);
-
+            $a = $db->get_event_username($username);
+            $a = $a[count($a)-1]["noevent"];
           }
-
-
-
-
         $db->closeDatabase();
         $db->openDatabase();
         $imagePath='';
@@ -94,9 +109,14 @@ $db->openDatabase();
         $_POST["btnCreate"]=array();
         $db->closeDatabase();
 }
+echo '<input type="hidden" id="noeventCreate" value="'.$a.'">';  
     ?>
 
-
+    <script>
+      if ($('#noeventCreate').val()!=""){
+          window.location="eventMain.php?noevent=".concat($('#noeventCreate').val());
+      }
+    </script>
 
     <?php
     // $title='';
@@ -335,7 +355,7 @@ $db->openDatabase();
       <div class="page-wrapper animate-bottom">
         <div class="container">
           <br>
-          <br>
+
           <?php
             $createBtn = '<button type="button" class="btn btn-danger btn-lg"  data-toggle="modal" data-target="#CREATE">Create event</button>';
             if(isset($_SESSION['username'])){
@@ -348,7 +368,7 @@ $db->openDatabase();
 
 
            ?>
-           <br>
+           
           <div class="category-container">
             <div class="page-header">
               <div class="btn-toolbar pull-right">
@@ -629,11 +649,11 @@ $db->openDatabase();
       <div class="form-group">
               <label class="control-label col-sm-1" >Video:</label>
 
-              <input type="file" class="form-control btn btn-default" name="vdoUpload"accept="video/*" required="">
+              <input type="file" class="form-control btn btn-default" name="vdoUpload"accept="video/*" required="true">
 
               <label class="control-label col-sm-1" >Image:</label>
 
-              <input type="file" class="form-control btn btn-default" name="fileToUpload[]" multiple="multiple" accept="image/*" required="">
+              <input type="file" class="form-control btn btn-default" name="fileToUpload[]" multiple="multiple" accept="image/*" required="true">
 </div>
 <div class="form-group">
                     <label class="control-label col-sm-12">Form link (To collect comments from attandants) :</label>
@@ -651,7 +671,7 @@ $db->openDatabase();
             <input type="hidden" id="lon" name="lon" value="103.123987">
           </div>
       <div class="modal-footer">
-      <input type="submit" name="btnCreate" style="text-align:center" class="btn btn-default " value="Submit">
+      <input type="submit" id="btnCre" name="btnCreate" style="text-align:center" class="btn btn-default " value="Submit">
         </div>
       </form>
 

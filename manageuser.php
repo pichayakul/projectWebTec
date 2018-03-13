@@ -147,7 +147,7 @@
 				<div class="col-sm-12 clearfix">
 					<br>
 					<br>
-					<hr>
+			    <hr style="height:5px;  background-color:#FF6666	;">
 				</div>
 			</div>
 			<div class="row">
@@ -155,7 +155,7 @@
 
 					<h2>Management Users</h2>
 					<br>
-					<hr>
+				  <hr style="height:5px;  background-color:#FF6666	;">
 					<br>
 				</div>
 			</div>

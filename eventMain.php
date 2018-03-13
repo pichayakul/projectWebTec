@@ -20,7 +20,9 @@
 
     <?php
     $uploadOk;
+    $finish=0;
     $report;
+    $updateC = 0;
     $title='';
     $noevent;
     $ticket=1;
@@ -93,21 +95,30 @@
                 if (isset($_POST)){
                     if (isset($_POST["btnCreate"]))
                     {
-                        $fi=$imagePath;
-                        $vd=$vdoPath;
+                        $fi="";
+                        $vd="";
                         if (isset($_POST["linkForm"])){
                             $linkForm = $_POST["linkForm"];
                         }
                         else{
                             $linkForm = "";
                         }
-                        if (isset($_POST["fileToUpload"])){
+                        // echo var_dump($_POST);
+                        // echo var_dump($_FILES);
+                        if ($_FILES["fileToUpload"]["name"][0]!=""){
                             foreach($_FILES["fileToUpload"]["name"] as $i => $name){
                                 $fi.='images/events/'.$title.'/organizerUpload'.'/'.$_FILES['fileToUpload']["name"][$i].',';
                             }
+                            
                         }
-                        if (isset($_POST["vdoUpload"])){
+                        if ($_FILES["vdoUpload"]["name"]!="") {
                             $vd = 'images/events/'.$title.'/organizerUpload'.'/'.$_FILES['vdoUpload']["name"];
+                        }
+                        if ($fi==""){
+                            $fi = $imagePath;
+                        }
+                        if ($vd==""){
+                            $vd=$vdoPath;
                         }
                         $start = $_POST['dateStart'].' '.$_POST['timeFrom'];
                         $end = $_POST['dateEnd'].' '.$_POST['timeTo'];
@@ -117,6 +128,8 @@
                         $db->update_event(intval($noevent),$username,$title,$_POST["T_Event"],intval($current),intval($_POST["capacity"]),intval($_POST["price"])
                         ,$fi,$vd,$_POST["description"],date('Y-m-d h:i:s'),
                         $start,$end,$_POST["location"],$_POST["precondition"],$lat,$lon,$linkForm);
+                        $updateC = 1;
+                        
                         }
                 }
                 if (isset($_POST["submitM"])){
@@ -136,9 +149,8 @@
                     for ($i=0;$i<count($row);$i++){
                         if ($row[$i]["username"]==$username){
                             $db->update_eventmember(intval($noevent),$username,date('Y-m-d h:i:s'),$fi,$op,intval($_POST["ticket"])+$row[$i]["tickets"]);
-                            $db->update_event(intval($noevent),$usernamePage,$title,$type,$current+$ti,$capacity,$price,$imagePath,
-                        $vdoPath,$description,$create_date_time,$start_date_time,$end_date_time,$location,$precondition,$lat,$lon,$linkForm);
                             $finish=1;
+                            
 
 
                             break;
@@ -147,9 +159,11 @@
                     if ($finish==0){
 
                         $db->add_eventmember(intval($noevent),$username,date('Y-m-d h:i:s'),$fi,$op,intval($_POST["ticket"]));
-                        $db->update_event(intval($noevent),$usernamePage,$title,$type,$current+$ti,$capacity,$price,$imagePath,
-                        $vdoPath,$description,$create_date_time,$start_date_time,$end_date_time,$location,$precondition,$lat,$lon,$linkForm);
+                        
                     }
+                    $db->update_event(intval($noevent),$usernamePage,$title,$type,$current+$ti,$capacity,$price,$imagePath,
+                        $vdoPath,$description,$create_date_time,$start_date_time,$end_date_time,$location,$precondition,$lat,$lon,$linkForm);
+                        $updateC = 1;
                 }
             }
         $db->closeDatabase();
@@ -229,11 +243,22 @@
             }
         }
         if (isset($_GET["accept"])){
-            $db->pass_event_eventmember($noevent, $_GET["accept"]);
+            $db->pass_event_eventmember($noevent, $_GET["accept"],date('Y-m-d h:i:s'));
+            // alert($_GET["accept"]. ' is Join the event.');
+            echo ("<script> alert('".$_GET["accept"]." is Joined the event now.')</script>");
+            
         }
         $db->closeDatabase();
+        echo "<input type='hidden' id='updateFinish' value=".$finish.">";
+        echo "<input type='hidden' id='noevent' value=".$noevent.">";
+        echo "<input type='hidden' id='updateC' value=".$updateC.">";
        ?>
 
+        <script>
+            if ($('#updateFinish').val()!="0" || $('#updateC').val()==1){
+                window.location="eventMain.php?noevent=".concat($('#noevent').val());
+            }
+        </script>
        <?php
 
 if ($username==$usernamePage)
@@ -262,7 +287,7 @@ if ($username==$usernamePage)
     <li><a  class="btn" data-toggle="modal" data-target="#closeEvent" >CloseEvent</a></li>';
     }
     echo '<li><a class="btn" data-toggle="modal" data-target="#manageRequest">ManageRequest</a></li>';
-    echo '<li><a class="btn" data-toggle="modal" data-target="#member">Member</a></li>';
+    echo '<li><a class="btn" data-toggle="modal" data-target="#member">Certificant</a></li>';
 
     echo '
 
@@ -287,7 +312,7 @@ if ($username==$usernamePage)
               <th>Username</th>
               <th>Ticket</th>
 
-              <th>Send</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody id="tableMember">';
@@ -366,8 +391,16 @@ if ($username==$usernamePage)
           <input type="text" value="'.$linkForm.'" class="form-control" readonly>
 
           <div style="margin-top:10">
-          Click here to sent the link to all attantdant
-          <button type="submit" id="sentMail" class="btn btn-info" style="margin-left:10px" value="sendMail" onclick='."'".'sendMailAssessetment('.$noevent.',"'.$username.'","'.$linkForm.'"'.')'."'".'>Send</button>
+          Click here to sent the link to all attantdant';
+          if ($linkForm!=""){
+              echo '<button type="submit" id="sentMail" class="btn btn-info" style="margin-left:10px" value="sendMail" onclick='."'".'sendMailAssessetment('.$noevent.',"'.$username.'","'.$linkForm.'"'.')'."'".'>Send</button>
+          ';
+            }
+            else{
+                echo '<button type="submit" id="sentMail" class="btn btn-info disabled" style="margin-left:10px" value="sendMail" onclick='."'".'sendMailAssessetment('.$noevent.',"'.$username.'","'.$linkForm.'"'.')'."'".'>Send</button>
+                ';  
+            }
+            echo '
           </div>
 
           </div>
@@ -417,7 +450,7 @@ if ($username==$usernamePage)
 
 
                   for ($round=0;$round < count($requestRow);$round++){
-                    if ($requestRow[$round]["status"]=='accepted'){
+                    if ($requestRow[$round]["status"]!='requested'){
                         echo '<tr class="success">';
                     }
                     else{
@@ -431,12 +464,12 @@ if ($username==$usernamePage)
                     echo '<td>';
 
                     $arrayIma = explode(',',$requestRow[$round]["payment_path"]);
-                    if (count($arrayIma)>2){
+                    if (count($arrayIma)>1){
 
 
                     for ($co=count($arrayIma);$co>=0;$co--){
                         if ($co<count($arrayIma)-1){
-                            echo '<img class="" data-toggle="modal" data-target="#popup_img" width="100" height="50" src="'.$arrayIma[$co].'" />';
+                            echo '<img width="100" height="50" src="'.$arrayIma[$co].'" />';
                         }
                     };
                     }
@@ -444,13 +477,13 @@ if ($username==$usernamePage)
                     echo '<td>';
 
                     $arrayIma = explode(',',$requestRow[$round]["pre_path"]);
-                    if (count($arrayIma)>2){
+                    if (count($arrayIma)>1){
 
 
                     for ($co=count($arrayIma);$co>=0;$co--){
                         if ($co<count($arrayIma)-1){
 
-                            echo '<img class="" data-toggle="modal" data-target="#popup_img" width="100" height="50" src="'.$arrayIma[$co].'" />';
+                            echo '<img width="100" height="50" src="'.$arrayIma[$co].'" />';
                         }
                     };
                     }
@@ -464,7 +497,7 @@ if ($username==$usernamePage)
                     $dataRequest.="'".$requestRow[$round]["pre_path"]."',";
                     $dataRequest.="'".$noevent."'";
 
-                    if ($requestRow[$round]["status"]=='accepted'){
+                    if ($requestRow[$round]["status"]!='requested'){
                         echo '<td><button type="button" class="btn btn-success disabled">accept</button></td>';
                     }
                     else {
@@ -598,7 +631,7 @@ if ($username==$usernamePage)
 
           <div class="form-group">
                   <label class="control-label col-sm-1" >Video:</label>
-                  <input type="file" class="form-control btn btn-default" name="vdoUpload"accept="video/*">
+                  <input type="file" class="form-control btn btn-default" name="vdoUpload"  accept="video/*">
                   <label class="control-label col-sm-1" >Image:</label>
                   <input type="file" class="form-control btn btn-default" name="fileToUpload[]" multiple="multiple" accept="image/*">
           </div>
@@ -728,7 +761,7 @@ if ($username==$usernamePage)
                                         <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">BuyTicket</h4>
+                                            <h4 class="modal-title">BuyTicket/Cancel</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div>';
@@ -778,7 +811,8 @@ if ($username==$usernamePage)
                                                     </table>
                                                     <hr>';
                                                 }
-                                                echo '
+                                                echo '<br>
+                                                <h3>Buy more </h3>
                                                 <div font-size:15px"><label class="control-label col-sm-10" >Ticket : '.'<button class="btn btn-primary" onclick="plusMoney(-1)" style="margin-left:80px">-</button><div id="ticket" style="display:inline;margin-left:20px">'.$ticket.'</div><button class="btn btn-primary" onclick="plusMoney(1)" style="margin-left:20px">+</button></label></div>
                                                 <div font-size:15px"><label class="control-label col-sm-10" >Total Amount : '.'<div id="price" style="display:inline;margin-left:80px">'.$price.'</div></label></div>
                                                     <form id="BUYID"method="post" enctype="multipart/form-data">

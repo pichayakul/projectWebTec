@@ -19,7 +19,7 @@
 	function pageToString($number, $arr) {
 		$capacity = 5;
 		$begin = 1;
-		$max = ($number*$capacity); 
+		$max = ($number*$capacity);
 		if ($number > 1) {
 			$begin = (($number-1)*$capacity)+1;
 		}
@@ -65,21 +65,21 @@
 ?>
 <body>
 	<div class="row content">
-		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-2" ></div>
 		<div class="col-sm-8">
 			<div class="row">
 				<div class="col-sm-12 clearfix">
 					<br>
 					<a class="btn btn-primary btn-sm float-left" href="./management.php">< Back</a>
 					<br>
-					<hr>
+					<hr style="height:5px;  background-color:#FF6666	;">
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<h2>Log</h2>
+					<h1>LOG</h1>
 					<br>
-					<hr>
+					<hr style="height:5px;  background-color:#FF6666	;">
 					<br>
 				</div>
 			</div>
@@ -109,7 +109,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-2" style="background-color:lavender;"></div>
+		<div class="col-sm-2" ></div>
 	</div>
 </body>
 </html>

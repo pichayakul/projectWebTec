@@ -55,6 +55,7 @@ if (isset($_POST['status'])) {
 			// print_r("date: ".$date." fdate: ".$fdate."<br>".strpos($date,$fdate));
 			// print_r("location: ".$location." flocation: ".$flocation."<br>");
 			// print_r("nickname: ".$nickname." organizer: ".$organizer);
+
 			if ($date == $fdate || $nickname == $organizer || strpos($location, $flocation) !== false || $current == $fcurrent) {
 				$filter[$c] = $e[$i];
 				$c++;
@@ -69,7 +70,7 @@ if (isset($_POST['status'])) {
 function pageToString($number, $arr) {
 	$capacity = 5;
 	$begin = 1;
-	$max = ($number*$capacity); 
+	$max = ($number*$capacity);
 	if ($number > 1) {
 		$begin = (($number-1)*$capacity)+1;
 	}
@@ -195,25 +196,25 @@ if (isset($_POST['next_page']) && count($arr) > 0) {
 	    </div>
 	  </div>
 	</div>
-		<div class="col-sm-1" style="background-color:lavender;"></div>
-		<div class="col-sm-9">
+		<div class="col-sm-2" ></div>
+		<div class="col-sm-8">
 			<div class="row">
-				<div class="col-sm-12 text-center">
+				<div class="col-sm-12 ">
 					<br>
-					<h2>Event</h2>
-					<hr>
+					<h1>View event</h1>
+				  <hr style="height:5px;  background-color:#FF6666	;">
 					<br>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-2"></div>
 				<div class="col-sm-8">
-					<button type="button" id="btn-filter" class="btn btn-info btn-lg <?php echo $is_show_btn_filter; ?>" data-toggle="modal" data-target="#event-filter-myModal">Filter</button>
+					<button type="button" id="btn-filter" class="btn btn-info btn-lg noshow <?php echo $is_show_btn_filter; ?>" data-toggle="modal" data-target="#event-filter-myModal">Filter</button>
 					<form method="POST" action="./admin-export.php">
 						<input type="hidden" name="event" value="<?php echo htmlspecialchars(json_encode($arr)); ?>">
 						<button type="submit" class="btn btn-success name="submit" <?php echo $is_show_export; ?>">Export</button>
 					</form>
-					
+
 				</div>
 				<div class="col-sm-2"></div>
 			</div>
@@ -249,7 +250,7 @@ if (isset($_POST['next_page']) && count($arr) > 0) {
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-1" style="background-color:lavender;"></div>
+		<div class="col-sm-2" ></div>
 	</div>
 </body>
 </html>

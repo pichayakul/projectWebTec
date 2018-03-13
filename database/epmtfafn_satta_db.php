@@ -389,10 +389,10 @@ class Database
 		$statement = $this->conn->prepare($query);
 		$statement->execute([':noevent' => $noevent, ':username' => $username]); //  set no event
 	}
-	public function pass_event_eventmember($noevent, $username) {
-		$query = 'UPDATE eventmember SET status="completed" WHERE noevent=:noevent AND username=:username';
+	public function pass_event_eventmember($noevent, $username,$date) {
+		$query = 'UPDATE eventmember SET status="completed",join_date_time=:date WHERE noevent=:noevent AND username=:username';
 		$statement = $this->conn->prepare($query);
-		$statement->execute([':noevent' => $noevent, ':username' => $username]); //  set no event
+		$statement->execute([':noevent' => $noevent, ':username' => $username,':date'=> $date]); //  set no event
 	}
 
 	public function decline_eventmember($noevent, $username) {
@@ -445,6 +445,8 @@ class Database
 											':lon' => $lon,
 										'linkF'=> $linkF]); //  set no event
 		// $ret = $statement->fetchAll(PDO::FETCH_ASSOC); //  fetch all to Array in Array
+		$ret = $noevent;
+		return $ret;
 	}
 
 	/**
@@ -800,6 +802,11 @@ class Database
 												':last_name' => $last_name,
 												':email' => $email,
 												':image' => $image]); //  set username
+	}
+	public function update_image_account($username,$image){
+		$statement = $this->conn->prepare('UPDATE account SET image=:image,username=:username WHERE username=:username' );
+		$statement->execute([':username' => $username,
+												':image' => $image]);
 	}
 
 

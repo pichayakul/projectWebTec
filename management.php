@@ -60,14 +60,15 @@
 					<br>
 
 					<br>
-					<hr>
+			    <hr style="height:5px;  background-color:#FF6666	;">
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<h2>Website Detail</h2>
+					<h1>Website Detail</h1>
 					<br>
-					<hr>
+					<hr style="height:5px;  background-color:#FF6666	;">
+
 					<br>
 				</div>
 			</div>

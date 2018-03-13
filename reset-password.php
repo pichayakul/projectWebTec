@@ -41,7 +41,7 @@ if (isset($_GET['status'])) {
 						<br><br>
 						<hr>
 						<div class="text-center">
-							<input type="hidden" name="username" value="<?php echo $username; ?>">
+							<input type="hidden" name="username" value="<?php echo $_GET['check-username']; ?>">
 							<input type="hidden" name="status" value="resetpassword">
 							<a id="reset-form-submit" class="btn btn-danger">Change</a>
 							<label>or</label>

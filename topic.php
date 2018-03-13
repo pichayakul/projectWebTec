@@ -84,6 +84,17 @@ $db->closeDataBase();
     <input type="hidden" name="noevent" value='<?php echo $_GET['noevent'];?>' />
 </form>
 
+<div style="margin-top:-50px;margin-left:-600px;">
+<?php
+// $currenceName =$db->get_noevent($_GET['noevent']);
+if ($permission['position']!="attendant" ){
+?>
+<td><div align="center" ><button class="btn btn-warning"  data-toggle="modal"  value=''  onclick="edit(<?php echo $_GET['v'];?>)" data-target="#editComment">Edit</button></div></td>
+<?php
+}
+?>
+</div>
+
 <table width="840" border="2">
 
 <tr id="TopicHeader">
@@ -100,6 +111,8 @@ $db->closeDataBase();
 <th width="180" height="100px"> <div align="center"><?php echo $dataTopic['description']?></div></th>
 <th width="100" height="20px"><div align="center"><?php  echo $dataTopic['username']?><br><?php  echo $dataTopic['date_time']?></div></th>
 </tr>
+
+
 </table>
 
 
@@ -166,7 +179,7 @@ $db->closeDataBase();
 <?php
 if (isset($_SESSION["position"])){
 if ($_SESSION["position"]=="admin"){ ?>
-  <?php echo var_dump($_SESSION);?>
+
 <button style="margin-left:20px;"   class="btn btn-danger"  onclick="deleteComment(<?php echo $index["notopic"];?>,<?php echo $index["nocomment"];?>)">Delete</button>
 <?php
 }
@@ -188,8 +201,8 @@ else{
 
 
 
-<div class="col-sm-10" style="height: 200px;background-repeat: no-repeat;">
-<td style="margin-left:60%;margin-top:15%;"  ><div   ><?php echo $index['message']?></div></td>
+<div class="col-sm-10" style="height: 200px;background:url(./images/webboard/boxtext.png);background-repeat: no-repeat;">
+<td style="margin-left:60%;"  ><div style="padding-top:30px;padding-left:30px;"   ><?php echo $index['message']?></div></td>
  </div>
 
  </div>
@@ -245,6 +258,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     <input id="submit"  class="btn btn-success"  onclick="addComment(<?php echo $_GET['v'];?>)"   type="submit" value="Create">
 </div>
 
+
+
+
+
 </div>
 </div>
 </div>
@@ -256,8 +273,55 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 </div>
 
+<div class="modal fade" id="editComment" role="dialog">
+<div class="modal-dialog">
+<div class="modal-content" style="width:420px">
+   <div class="modal-body">
+   <button type="button" class="close" data-dismiss="modal">&times;</button>
+   <h3 id="test5" class="modal-title">Edit</h3>
+   <input type="text" name="topic" id="topicEdit" >
+<p>Description</p>
+<textarea style="height:300px;width:370px" name="descriptionEdit" id="desEdit">  </textarea>
+   </div>
+   <div class="modal-footer">
+   <input id="okEdit" class="btn btn-success"  type="submit" value="Submit"  onclick="editTopic()">
+   </div>
+</div>
+</div>
+</div>
 
 <script>
+  var ans=0;
+
+    function editTopic(){
+        var id=ans;
+         var topic = document.getElementById('topicEdit').value;
+         var des = document.getElementById('desEdit').value;
+         var noEvent = "<?php echo $_GET['noevent'];?>";
+         var user = usernameEdit;
+        $.post('database/functionWebboard.php',{editTopic:"true",id:id,noevent:noEvent,username:user,topic:topic,description:des},
+        function(data){
+         location.reload();
+        });
+    }
+    function edit(id){
+        ans=id;
+        console.log(id);
+
+        var list = <?php
+        $db->openDataBase();
+        $da=$db->get_topic_noevent_all($_GET['noevent']);
+        $db->closeDataBase();
+         echo json_encode($da);?> ;
+            for (i = 0; i < list.length; i++) {
+           if (list[i]['notopic']==id){
+            document.getElementById("topicEdit").value = list[i]['header'];
+            document.getElementById("desEdit").value = list[i]['description'];
+            usernameEdit=list[i]['username'];
+           }
+        }
+    }
+
 
   function deleteComment(notopic,nocomment){
     var ans =confirm("Are you sure you want to remove this item ?");
