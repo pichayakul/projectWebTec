@@ -75,7 +75,6 @@ $db->openDatabase();
             $db->update_image_account($_SESSION["username"],$_FILES["imageUp"]["name"]);
           }
         }
-        
         if (isset($_POST["btnCreate"])){
 
           // echo "aaaaaaaaaaaaaaa";
