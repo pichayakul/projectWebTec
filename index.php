@@ -68,11 +68,14 @@ function showPage() {
 $db = new Database();
 $a="";
 $db->openDatabase();
-        echo var_dump($_FILES);
-        echo var_dump($_POST);
-        if ($_FILES["imageUp"]["name"]!=""){
-          $db->update_image_account($_SESSION["username"],$_FILES["imageUp"]["name"]);
+        // echo var_dump($_FILES);
+        // echo var_dump($_POST);
+        if (isset($_FILES["imageUp"])){
+          if ($_FILES["imageUp"]["name"]!=""){
+            $db->update_image_account($_SESSION["username"],$_FILES["imageUp"]["name"]);
+          }
         }
+        
         if (isset($_POST["btnCreate"])){
 
           // echo "aaaaaaaaaaaaaaa";
