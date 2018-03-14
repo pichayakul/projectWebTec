@@ -1,4 +1,4 @@
-ReadMeFile
+﻿ReadMeFile
 
 1. import epmtfafn_satta_db.sql ใน database
 
@@ -20,7 +20,7 @@ ReadMeFile
 
 
 
-
+last/
 
 
 
